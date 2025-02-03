@@ -1,24 +1,57 @@
-import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { AuthContext } from "@/contexts/auth";
+import { Link, router } from "expo-router";
+import { useContext, useState } from "react";
 import {
-  Platform,
+  Alert,
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
 } from "react-native";
 
-export default function SignUp() {
-  const route = useRouter();
+export default function Login() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const { signIn } = useContext(AuthContext);
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert("Preencha todos os campos!");
+      return;
+    }
+    signIn(email, password);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      <TextInput
+        placeholder="Email"
+        onChangeText={setEmail}
+        value={email}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Senha"
+        onChangeText={setPassword}
+        value={password}
+        style={styles.input}
+        secureTextEntry
+      />
+      <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <Text>Entrar</Text>
+      </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => route.push("/sign")}
+        onPress={() => router.replace("/perfil")}
         style={styles.button}
       >
-        <Text>Cadastro</Text>
+        <Text>Perfil</Text>
       </TouchableOpacity>
+      <SafeAreaView>
+        <Link href={"/sign-up"}>
+          <Text>Criar um novo registro</Text>
+        </Link>
+      </SafeAreaView>
     </SafeAreaView>
   );
 }
@@ -26,30 +59,22 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: -10,
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
-    marginTop: "1%",
-    paddingVertical: "1%",
-    paddingHorizontal: "3%",
-    alignItems: "center",
-    justifyContent: "center",
+    marginTop: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     backgroundColor: "#d3d3d3",
-    borderRadius: 20,
+    borderRadius: 10,
   },
-  text: {
-    color: "black",
-    fontSize: 15,
-    justifyContent: "center",
-    marginTop: 6,
-    alignItems: "center",
-  },
-  image: {
-    width: 450,
-    height: 950,
-    marginTop: -50,
+  input: {
+    borderWidth: 1,
+    width: 250,
+    height: 40,
+    borderRadius: 10,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
 });

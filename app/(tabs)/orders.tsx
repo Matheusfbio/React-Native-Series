@@ -1,17 +1,18 @@
-import { StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
+import React from "react";
 
 export default function OrdersScreen() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Carrinho</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

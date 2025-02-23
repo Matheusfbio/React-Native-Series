@@ -64,6 +64,8 @@
 // });
 
 import { AuthContext } from "@/contexts/auth";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useContext, useState } from "react";
 import {
   Alert,
@@ -92,30 +94,39 @@ export default function SignIn() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        placeholder="Digite seu nome"
-        onChangeText={setName}
-        value={name}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Digite seu email"
-        onChangeText={setEmail}
-        value={email}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Digite sua senha"
-        onChangeText={setPassword}
-        value={password}
-        style={styles.input}
-        secureTextEntry
-      />
-      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-        <Text>Entrar</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+    <>
+      <StatusBar style="auto" />
+      <SafeAreaView style={styles.container}>
+        <TextInput
+          placeholder="Digite seu nome"
+          onChangeText={setName}
+          value={name}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Digite seu email"
+          onChangeText={setEmail}
+          value={email}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Digite sua senha"
+          onChangeText={setPassword}
+          value={password}
+          style={styles.input}
+          secureTextEntry
+        />
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+          <Text>Criar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.replace("/")}
+          style={styles.button}
+        >
+          <Text>voltar</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -132,7 +143,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 250,
     height: 40,
+    // borderColor: "#d3d3d3",
+    // backgroundColor: "#d3d3d3",
     borderRadius: 10,
+    textShadowColor: "#d3d3d3",
     marginBottom: 10,
     paddingHorizontal: 10,
   },

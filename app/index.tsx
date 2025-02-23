@@ -1,5 +1,6 @@
 import { AuthContext } from "@/contexts/auth";
 import { Link, router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useContext, useState } from "react";
 import {
   Alert,
@@ -24,35 +25,33 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        placeholder="Email"
-        onChangeText={setEmail}
-        value={email}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Senha"
-        onChangeText={setPassword}
-        value={password}
-        style={styles.input}
-        secureTextEntry
-      />
-      <TouchableOpacity onPress={handleLogin} style={styles.button}>
-        <Text>Entrar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => router.replace("/perfil")}
-        style={styles.button}
-      >
-        <Text>Perfil</Text>
-      </TouchableOpacity>
-      <SafeAreaView>
-        <Link href={"/sign-up"}>
-          <Text>Criar um novo registro</Text>
-        </Link>
+    <>
+      <StatusBar style="auto" />
+      <SafeAreaView style={styles.container}>
+        <TextInput
+          placeholder="Email"
+          onChangeText={setEmail}
+          value={email}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Senha"
+          onChangeText={setPassword}
+          value={password}
+          style={styles.input}
+          secureTextEntry
+        />
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+          <Text>Entrar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.replace("/(sign-up)/sign-up")}
+          style={styles.button}
+        >
+          <Text>Criar conta</Text>
+        </TouchableOpacity>
       </SafeAreaView>
-    </SafeAreaView>
+    </>
   );
 }
 

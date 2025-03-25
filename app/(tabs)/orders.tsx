@@ -1,11 +1,12 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
+import React from "react";
 
-export default function BudgetScreen() {
+export default function OrdersScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Orçamentos</Text>
+      <Text style={styles.title}>Carrinho</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

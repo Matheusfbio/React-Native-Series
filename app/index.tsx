@@ -1,5 +1,5 @@
 import { AuthContext } from "@/contexts/auth";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useState } from "react";
 import {

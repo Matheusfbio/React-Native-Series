@@ -50,6 +50,13 @@ export default function AuthProvider({ children }: any) {
         const parsedUser: AuthUser = JSON.parse(storedUser);
         if (parsedUser.email === email && parsedUser.password === password) {
           setUser(parsedUser);
+
+          // Salva o usuário autenticado no AsyncStorage
+          await AsyncStorage.setItem(
+            "@react-native-learn:AuthUser",
+            JSON.stringify(parsedUser)
+          );
+
           Alert.alert(`Bem-vindo, ${parsedUser.name}!`);
           router.replace("/(tabs)");
           return;

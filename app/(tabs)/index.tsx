@@ -1,8 +1,23 @@
+import firestore from '@react-native-firebase/firestore';
 import { SafeAreaView, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
+import { useState, useEffect } from "react";
 
 export default function BudgetScreen() {
+
+  const [posts, setPosts] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    const subListener = firestore()
+      .collection('blogs')
+      .onSnapshot((snapshot) => {
+        if (snapshot) {
+          setPosts(snapshot.docs);
+        }
+      });
+    return () => subListener();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Orçamentos</Text>
@@ -31,3 +46,4 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+

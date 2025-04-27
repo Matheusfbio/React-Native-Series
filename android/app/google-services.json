@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1095838590351",
+    "project_id": "react-native-series-e045f",
+    "storage_bucket": "react-native-series-e045f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095838590351:android:7bef12282c6786a3aad7fa",
+        "android_client_info": {
+          "package_name": "com.matheusfabio.reactnativelearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095838590351-8u1u47kek3jbvld8n6gdfej5el1pp0li.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.matheusfabio.reactnativelearn",
+            "certificate_hash": "a9dc4ec3c5bbb5e2d7919f2988a9772ba43e8055"
+          }
+        },
+        {
+          "client_id": "1095838590351-lb9gtlibt7a8cinmqekuld3f63cs1a0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABLuUzcLQsUs-0DwDNkMb6cvKAy__4RUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095838590351-lb9gtlibt7a8cinmqekuld3f63cs1a0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

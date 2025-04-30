@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Platform, StyleSheet, TouchableOpacity } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 import { router } from "expo-router";
@@ -8,13 +8,24 @@ import { AuthContext } from "@/contexts/auth";
 
 export default function PerfilScreen() {
   const { user } = useContext(AuthContext);
-  return (
+  const { signOut } = useContext(AuthContext);
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.replace("/");
+    } catch (error) {
+      console.error("Erro ao sair:", error);  
+    } finally {
+      <ActivityIndicator size="large" color="#0000ff" />;
+    }
+  }
+  return (  
     <View style={styles.container}>
       <Text style={styles.title}>{user?.name}</Text>
       <Text style={styles.title}>{user?.email}</Text>
       <Text style={styles.title}>{user?.status}</Text>
       <TouchableOpacity
-        onPress={() => router.replace("/")}
+        onPress={handleSignOut}
         style={styles.button}
       >
         <Text>Sair</Text>

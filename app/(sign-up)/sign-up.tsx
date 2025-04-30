@@ -1,9 +1,11 @@
 import { AuthContext } from "@/contexts/auth";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
+  BackHandler,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -15,6 +17,7 @@ export default function SignIn() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const authContext = useContext(AuthContext);
 
@@ -27,6 +30,20 @@ export default function SignIn() {
     }
     signUp(name, email, password);
   };
+
+   useEffect(() => {
+      const backAction = () => {
+        router.replace("/");
+        return true; // Ensure the function returns a boolean
+      };
+  
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+  
+      return () => backHandler.remove(); // Remove o listener ao desmontar o componente
+    }, []);
 
   return (
     <>
@@ -51,9 +68,15 @@ export default function SignIn() {
           style={styles.input}
           secureTextEntry
         />
+        <>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />) :
+          
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
           <Text>Criar</Text>
         </TouchableOpacity>
+          } 
+        </>
         <TouchableOpacity
           onPress={() => router.replace("/")}
           style={styles.button}

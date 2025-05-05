@@ -4,11 +4,11 @@ import app from "@/firebaseconfig"
 
 interface BudgetsItemInterface {
   name: string;
-  price: number;
-  description: string;
-  category: string;
-  date: string;
-  id: string;
+  price: string;
+  description?: string;
+  category?: string;
+  date?: string;
+  id?: string;
   // userId: string;
   // createdAt: string;
   // updatedAt: string;

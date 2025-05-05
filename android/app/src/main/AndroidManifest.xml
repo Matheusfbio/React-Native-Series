@@ -27,10 +27,8 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="myapp"/>
-        <data android:scheme="com.matheusfabio.reactnativelearn"/>
+        <data android:scheme="orcabox"/>
         <data android:scheme="exp+react-native-learn"/>
-        <data android:scheme="exp+orabox"/>
       </intent-filter>
     </activity>
   </application>

@@ -23,16 +23,28 @@ export const AuthContext = createContext<AuthContextType>(
 
 export default function AuthProvider({ children }: any) {
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     loadUser();
   }, []);
 
+  useEffect(() => {
+    AsyncStorage.getAllKeys().then((keys) =>
+      console.log("Chaves armazenadas:", keys)
+    );
+    AsyncStorage.getItem("@react-native-learn:AuthUsers").then((data) =>
+      console.log("Usuários armazenados:", data)
+    );
+  }, []);
+
   async function loadUser() {
     try {
-      const storedUser = await AsyncStorage.getItem("@react-native-learn:AuthUser");
-      const isAuthenticated = await AsyncStorage.getItem("@react-native-learn:IsAuthenticated");
+      const storedUser = await AsyncStorage.getItem(
+        "@react-native-learn:AuthUser"
+      );
+      const isAuthenticated = await AsyncStorage.getItem(
+        "@react-native-learn:IsAuthenticated"
+      );
 
       // Verifica se o usuário está autenticado antes de redirecionar
       if (storedUser && isAuthenticated === "true") {
@@ -49,20 +61,33 @@ export default function AuthProvider({ children }: any) {
 
   async function signIn(email: string, password: string) {
     try {
-      const storedUser = await AsyncStorage.getItem("@react-native-learn:AuthUser");
-      if (storedUser) {
-        const parsedUser: AuthUser = JSON.parse(storedUser);
-        if (parsedUser.email === email && parsedUser.password === password) {
-          setUser(parsedUser);
+      const storedUsers = await AsyncStorage.getItem(
+        "@react-native-learn:AuthUsers"
+      );
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-          // Salva o estado de autenticação
-          await AsyncStorage.setItem("@react-native-learn:IsAuthenticated", "true");
+      // Procura o usuário com o e-mail e senha fornecidos
+      const foundUser = users.find(
+        (user: AuthUser) => user.email === email && user.password === password
+      );
 
-          Alert.alert(`Bem-vindo, ${parsedUser.name}!`);
-          router.replace("/(tabs)"); // Redireciona para a tela principal
-          return;
-        }
+      if (foundUser) {
+        setUser(foundUser);
+
+        await AsyncStorage.setItem(
+          "@react-native-learn:AuthUser",
+          JSON.stringify(foundUser)
+        );
+        await AsyncStorage.setItem(
+          "@react-native-learn:IsAuthenticated",
+          "true"
+        );
+
+        Alert.alert(`Bem-vindo, ${foundUser.name}!`);
+        router.replace("/(tabs)");
+        return;
       }
+
       Alert.alert("Credenciais inválidas!");
     } catch (error) {
       console.error("Erro ao fazer login", error);
@@ -78,28 +103,34 @@ export default function AuthProvider({ children }: any) {
     const newUser: AuthUser = { name, email, status: "Ativo", password };
 
     try {
-      // Exibe o indicador de carregamento
-      setIsLoading(true);
+      const storedUsers = await AsyncStorage.getItem(
+        "@react-native-learn:AuthUsers"
+      );
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
 
-      // Simula um tempo de processamento (exemplo: 2 segundos)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Verifica se o e-mail já está cadastrado
+      if (users.some((user: AuthUser) => user.email === email)) {
+        Alert.alert("E-mail já cadastrado!");
+        return;
+      }
 
-      // Salva o usuário no AsyncStorage
+      // Adiciona o novo usuário à lista
+      users.push(newUser);
+      await AsyncStorage.setItem(
+        "@react-native-learn:AuthUsers",
+        JSON.stringify(users)
+      );
+
+      Alert.alert("Cadastro realizado com sucesso!");
+      setUser(newUser);
       await AsyncStorage.setItem(
         "@react-native-learn:AuthUser",
         JSON.stringify(newUser)
       );
-
-      // Atualiza o estado do usuário e exibe a mensagem de sucesso
-      setUser(newUser);
-      Alert.alert("Cadastro realizado com sucesso!");
-      router.replace("/(tabs)/orders"); // Redireciona para a tela principal
+      await AsyncStorage.setItem("@react-native-learn:IsAuthenticated", "true");
+      router.replace("/(tabs)");
     } catch (error) {
       console.error("Erro ao salvar usuário", error);
-      Alert.alert("Erro ao realizar o cadastro. Tente novamente.");
-    } finally {
-      // Oculta o indicador de carregamento
-      setIsLoading(false);
     }
   }
 

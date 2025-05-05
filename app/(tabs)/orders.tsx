@@ -1,17 +1,124 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { router, Stack, useLocalSearchParams } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Text, View } from "@/components/Themed";
-import React from "react";
+export default function ItemModal() {
+  // gat the id from the url
+  const { id } = useLocalSearchParams();
 
-export default function OrdersScreen() {
+  // local state
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  // local state for edit mode
+  const [editMode, setEditMode] = useState(false);
+
+  // get the database context
+  const database = useSQLiteContext();
+
+  React.useEffect(() => {
+    if (id) {
+      // if id is present, then we are in edit mode
+      setEditMode(true);
+      loadData();
+    }
+  }, [id]);
+
+  const loadData = async () => {
+    const result = await database.getFirstAsync<{
+      id: number;
+      name: string;
+      email: string;
+    }>(`SELECT * FROM users WHERE id = ?`, [parseInt(id as string)]);
+    setName(result?.name!);
+    setEmail(result?.email!);
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await database.runAsync(
+        `INSERT INTO users (name, email, image) VALUES (?, ?, ?)`,
+        [name, email, ""]
+      );
+      console.log("Item saved successfully:", response?.changes!);
+      router.back();
+    } catch (error) {
+      console.error("Error saving item:", error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await database.runAsync(
+        `UPDATE users SET name = ?, email = ? WHERE id = ?`,
+        [name, email, parseInt(id as string)]
+      );
+      console.log("Item updated successfully:", response?.changes!);
+      router.back();
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
+  };
+
+  const headerRight = () => (
+    <TouchableOpacity onPress={() => router.navigate("../cart")}>
+      <FontAwesome
+        style={{ marginRight: 20 }}
+        name="cart-plus"
+        size={32}
+        color="black"
+      />
+    </TouchableOpacity>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Carrinho</Text>
+      <Stack.Screen options={{ headerRight }} />
       <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
+        style={{
+          gap: 20,
+          marginVertical: 20,
+        }}
+      >
+        <TextInput
+          placeholder="Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(text)}
+          style={styles.textInput}
+        />
+      </View>
+      <View style={{ flex: 1, flexDirection: "row", gap: 20 }}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={[styles.button, { backgroundColor: "red" }]}
+        >
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => {
+            editMode ? handleUpdate() : handleSave();
+          }}
+          style={[styles.button, { backgroundColor: "blue" }]}
+        >
+          <Text style={styles.buttonText}>{editMode ? "Update" : "Save"}</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -20,15 +127,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+  },
+  textInput: {
+    borderWidth: 1,
+    padding: 10,
+    width: 300,
+    borderRadius: 5,
+    borderColor: "slategray",
+  },
+  button: {
+    height: 40,
+    width: 100,
+    alignItems: "center",
     justifyContent: "center",
+    borderRadius: 5,
   },
-  title: {
-    fontSize: 20,
+  buttonText: {
     fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+    color: "white",
   },
 });

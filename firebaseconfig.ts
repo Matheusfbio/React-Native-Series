@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyb-huZD0LLHIz7bEUluRF_uRSXUtc1sY",
   authDomain: "react-native-series-e045f.firebaseapp.com",
+  databaseURL: "https://react-native-series-e045f-default-rtdb.firebaseio.com",
   projectId: "react-native-series-e045f",
   storageBucket: "react-native-series-e045f.firebasestorage.app",
   messagingSenderId: "1095838590351",
@@ -11,7 +12,7 @@ const firebaseConfig = {
   measurementId: "G-7Q60H69MSZ"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-export default app;
-// const analytics = getAnalytics(app);
+const db = getDatabase(app);
+export {db};

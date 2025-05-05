@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "OrçaBox",
-    "slug": "OrçaBox",
+    "slug": "react-native-learn",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "OrçaBox",
+    "scheme": "orcabox",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -14,6 +14,7 @@
       "backgroundColor": "#fff000"
     },
     "android": {
+      "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,6 +32,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-sqlite",
       [
         "expo-image-picker",
         {
@@ -51,9 +53,6 @@
       ],
       "expo-font"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
       "router": {
         "origin": false
@@ -62,7 +61,7 @@
         "projectId": "3166eeed-d0b1-44b0-831a-7a35597d7899"
       }
     },
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": "1.0.1",
     "updates": {
       "url": "https://u.expo.dev/3166eeed-d0b1-44b0-831a-7a35597d7899"
     },

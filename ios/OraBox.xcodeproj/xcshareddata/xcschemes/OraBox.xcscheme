@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "reactnativelearn.app"
-               BlueprintName = "reactnativelearn"
-               ReferencedContainer = "container:reactnativelearn.xcodeproj">
+               BuildableName = "OraBox.app"
+               BlueprintName = "OraBox"
+               ReferencedContainer = "container:OraBox.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "reactnativelearnTests.xctest"
-               BlueprintName = "reactnativelearnTests"
-               ReferencedContainer = "container:reactnativelearn.xcodeproj">
+               BuildableName = "OraBoxTests.xctest"
+               BlueprintName = "OraBoxTests"
+               ReferencedContainer = "container:OraBox.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "reactnativelearn.app"
-            BlueprintName = "reactnativelearn"
-            ReferencedContainer = "container:reactnativelearn.xcodeproj">
+            BuildableName = "OraBox.app"
+            BlueprintName = "OraBox"
+            ReferencedContainer = "container:OraBox.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "reactnativelearn.app"
-            BlueprintName = "reactnativelearn"
-            ReferencedContainer = "container:reactnativelearn.xcodeproj">
+            BuildableName = "OraBox.app"
+            BlueprintName = "OraBox"
+            ReferencedContainer = "container:OraBox.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -57,13 +57,11 @@ function RootLayoutNav() {
     //
     console.log("Creating database");
     try {
-      // Create a table
-      const response = await db.execAsync(
-        "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT)"
-      );
-      console.log("Database created", response);
-    } catch (error) {
-      console.error("Error creating database:", error);
+      await db.execAsync("ALTER TABLE users ADD COLUMN image TEXT");
+    } catch (err) {
+      if (!`${err}`.includes("duplicate column")) {
+        console.error("Erro ao adicionar coluna image:", err);
+      }
     }
   };
 
@@ -85,7 +83,7 @@ function RootLayoutNav() {
               options={{ headerShown: false }}
             />
             <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
-            <Stack.Screen name="cart" options={{ headerShown: true }} />
+            <Stack.Screen name="cart" options={{ presentation: "modal" }} />
             {/* <Stack.Screen
             name="modal"
             options={{

@@ -1,95 +1,136 @@
-import { router, Stack, useFocusEffect } from "expo-router";
-import React, { useCallback } from "react";
+import { router, Stack, useLocalSearchParams } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import React, { useState } from "react";
 import {
+  StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  FlatList,
-  StyleSheet,
+  TextInput,
 } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useSQLiteContext } from "expo-sqlite";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Cart() {
-  const [data, setData] = React.useState<
-    { id: number; name: string; email: string }[]
-  >([]);
+export default function Carts() {
+  // gat the id from the url
+  const { id } = useLocalSearchParams();
+
+  // local state
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  // local state for edit mode
+  const [editMode, setEditMode] = useState(false);
+
+  // get the database context
   const database = useSQLiteContext();
-  useFocusEffect(
-    useCallback(() => {
-      loadData(); // Fetch data when the screen is focused
-    }, [])
-  );
 
-  const headerRight = () => (
-    <TouchableOpacity
-      onPress={() => router.push("/orders")}
-      style={{ marginRight: 10 }}
-    >
-      {/* <FontAwesome name="plus-circle" size={28} color="blue" /> */}
-    </TouchableOpacity>
-  );
+  React.useEffect(() => {
+    if (id) {
+      // if id is present, then we are in edit mode
+      setEditMode(true);
+      loadData();
+    }
+  }, [id]);
 
   const loadData = async () => {
-    const result = await database.getAllAsync<{
+    const result = await database.getFirstAsync<{
       id: number;
       name: string;
       email: string;
-    }>("SELECT * FROM users");
-    setData(result);
+    }>(`SELECT * FROM users WHERE id = ?`, [parseInt(id as string)]);
+    setName(result?.name!);
+    setEmail(result?.email!);
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await database.runAsync(
+        `INSERT INTO users (name, email, image) VALUES (?, ?, ?)`,
+        [name, email, ""]
+      );
+      console.log("Item saved successfully:", response?.changes!);
+      router.back();
+    } catch (error) {
+      console.error("Error saving item:", error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await database.runAsync(
+        `UPDATE users SET name = ?, email = ? WHERE id = ?`,
+        [name, email, parseInt(id as string)]
+      );
+      console.log("Item updated successfully:", response?.changes!);
+      router.back();
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
   };
 
   return (
-    <View>
-      <Stack.Screen options={{ headerShown: true, headerRight }} />
-      <View>
-        <FlatList
-          data={data}
-          renderItem={({
-            item,
-          }: {
-            item: { id: number; name: string; email: string };
-          }) => (
-            <View style={{ padding: 10 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <View>
-                  <Text>{item.name}</Text>
-                  <Text>{item.email}</Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    router.push(`../orders?id=${item.id}`);
-                  }}
-                  style={styles.button}
-                >
-                  <Text style={styles.buttonText}>Edit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+    <SafeAreaView style={styles.container}>
+      <Stack.Screen options={{ title: "Cart" }} />
+      <View
+        style={{
+          gap: 20,
+          marginVertical: 20,
+        }}
+      >
+        <TextInput
+          placeholder="Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(text)}
+          style={styles.textInput}
         />
       </View>
-    </View>
+      <View style={{ flex: 1, flexDirection: "row", gap: 20 }}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={[styles.button, { backgroundColor: "red" }]}
+        >
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => {
+            editMode ? handleUpdate() : handleSave();
+          }}
+          style={[styles.button, { backgroundColor: "blue" }]}
+        >
+          <Text style={styles.buttonText}>{editMode ? "Update" : "Save"}</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+  },
+  textInput: {
+    borderWidth: 1,
+    padding: 10,
+    width: 300,
+    borderRadius: 5,
+    borderColor: "slategray",
+  },
   button: {
-    height: 30,
-    width: 40,
+    height: 40,
+    width: 100,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
-    backgroundColor: "blue",
-    alignContent: "flex-end",
   },
   buttonText: {
-    fontSize: 12,
     fontWeight: "bold",
     color: "white",
   },

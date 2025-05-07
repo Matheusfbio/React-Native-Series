@@ -29,6 +29,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="orcabox"/>
         <data android:scheme="exp+react-native-learn"/>
+        <data android:scheme="com.matheusfabio.reactnativelearn"/>
       </intent-filter>
     </activity>
   </application>

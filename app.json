@@ -8,6 +8,7 @@
     "scheme": "orcabox",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "sdkVersion": "52.0.0",
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",

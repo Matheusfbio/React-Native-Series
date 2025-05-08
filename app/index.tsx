@@ -16,7 +16,8 @@ import {
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");  const { signIn } = useContext(AuthContext);
+  const [password, setPassword] = useState<string>("");
+  const { signIn } = useContext(AuthContext);
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -69,7 +70,7 @@ export default function Login() {
           <TouchableOpacity
             onPress={() => router.replace("/(sign-up)/sign-up")}
             style={styles.button}
-            >
+          >
             <Text>Criar conta</Text>
           </TouchableOpacity>
         </View>
@@ -81,7 +82,6 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 20,
     gap: 10,
-    alignItems: "flex-start", 
-    justifyContent: "space-between"
+    alignItems: "flex-start",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 20,
@@ -109,15 +109,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    backgroundColor: "#d3d3d3",
+    // backgroundColor: "#d3d3d3",
     borderRadius: 10,
     width: 200,
     height: 50,
   },
   input: {
     // textAlign: "center",
-    borderColor: "#d3d3d3",
-    backgroundColor: "#d3d3d3",
+    // borderColor: "#d3d3d3",
+    // backgroundColor: "#d3d3d3",
     borderWidth: 1,
     width: 400,
     height: 40,
@@ -131,5 +131,5 @@ const styles = StyleSheet.create({
     color: "black",
     marginBottom: 30,
     paddingHorizontal: 10,
-  }
+  },
 });

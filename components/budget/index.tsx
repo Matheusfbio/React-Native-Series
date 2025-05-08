@@ -7,24 +7,24 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React, { useContext, useLayoutEffect, useMemo, useState } from 'react';
-import { getAuth } from 'firebase/auth';
-import app from '@/firebaseconfig';
-import { MaterialIcons } from '@expo/vector-icons';
+} from "react-native";
+import React, { useContext, useLayoutEffect, useMemo, useState } from "react";
+import { getAuth } from "firebase/auth";
+import app from "@/firebaseconfig";
+import { MaterialIcons } from "@expo/vector-icons";
 // import Empty from './todo/Empty';
 // import TodoItem from './todo/TodoItem';
 // import { sortItemsByCompletion } from './utils/SortTodos';
 // import { DataContext } from './utils/Context';
-import { createBudget } from '@/domain/firebase/create';
-import { fetchOnlyBudgetList } from '@/domain/firebase/read';
+import { createBudget } from "@/domain/firebase/create";
+import { fetchOnlyBudgetList } from "@/domain/firebase/read";
 
 export default function BudgetScreen() {
   const user = getAuth(app).currentUser;
   const { tasks, setTasks } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
-  const [todo, setTodo] = useState('');
+  const [todo, setTodo] = useState("");
 
   const sortedTodos = useMemo(() => {
     return sortItemsByCompletion(tasks);
@@ -50,7 +50,7 @@ export default function BudgetScreen() {
         docId: addedTask.id,
       };
       setTasks(() => [todoItem, ...tasks]);
-      setTodo('');
+      setTodo("");
     } catch (error) {
     } finally {
       setLoading(false);
@@ -69,8 +69,8 @@ export default function BudgetScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.greeting}>
-        Hello,{' '}
-        <Text style={{ color: 'teal' }}>{user?.displayName || 'user'}</Text>
+        Hello
+        <Text style={{ color: "teal" }}>{user?.displayName || "user"}</Text>
       </Text>
       <View style={styles.row}>
         <TextInput
@@ -87,8 +87,8 @@ export default function BudgetScreen() {
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator animating={loading} color={'white'} />
-          ) : (
+            <ActivityIndicator animating={loading} color={"white"} />
+          ) : (white
             <MaterialIcons name="add" size={30} color="white" />
           )}
         </TouchableOpacity>
@@ -115,37 +115,37 @@ const styles = StyleSheet.create({
   },
   greeting: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     marginTop: 15,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   button: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'teal',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "teal",
     height: 60,
-    width: '18%',
+    width: "18%",
     borderRadius: 8,
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 10,
     columnGap: 10,
   },
   input: {
     height: 60,
     borderRadius: 8,
-    width: '80%',
-    backgroundColor: 'white',
+    width: "80%",
+    backgroundColor: "white",
     elevation: 10,
     shadowOffset: { width: 5, height: 5 },
     shadowRadius: 10,
     paddingHorizontal: 15,
     fontSize: 18,
-    color: 'rgba(0,0,0,0.6)',
-    fontStyle: 'italic',
+    color: "rgba(0,0,0,0.6)",
+    fontStyle: "italic",
   },
   container: {
     flex: 1,

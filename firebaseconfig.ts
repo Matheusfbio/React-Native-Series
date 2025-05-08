@@ -9,10 +9,10 @@ const firebaseConfig = {
   storageBucket: "react-native-series-e045f.firebasestorage.app",
   messagingSenderId: "1095838590351",
   appId: "1:1095838590351:web:e3511cfc4339a20aaad7fa",
-  measurementId: "G-7Q60H69MSZ"
+  measurementId: "G-7Q60H69MSZ",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-export {db};
+export { db, app };

@@ -8,7 +8,7 @@ import { Text, View } from "@/components/Themed";
 import { useState } from "react";
 import { db } from "@/firebaseconfig"; // Importe o database inicializado
 import { push, ref } from "firebase/database";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 
 export default function BudgetScreen() {
   const [name, setName] = useState<string>("");
@@ -33,20 +33,18 @@ export default function BudgetScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
-      <View>
-        <TextInput
-          placeholder="Nome"
-          onChangeText={setName}
-          value={name}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="valor"
-          onChangeText={setPrice}
-          value={price}
-          style={styles.input}
-        />
-      </View>
+      <TextInput
+        placeholder="Nome"
+        onChangeText={setName}
+        value={name}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="valor"
+        onChangeText={setPrice}
+        value={price}
+        style={styles.input}
+      />
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text>Cadastrar</Text>
       </TouchableOpacity>
@@ -61,12 +59,10 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 30,
-    height: 1,
     width: "80%",
   },
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -84,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // flexDirection:0 "row",
     // marginTop: 20,
-    // margin: 16,
+    margin: 16,
     textAlign: "center",
     justifyContent: "center",
     paddingVertical: 10,
@@ -97,11 +93,10 @@ const styles = StyleSheet.create({
     // textAlign: "center",
     borderColor: "#d3d3d3",
     backgroundColor: "#d3d3d3",
-    borderWidth: 1,
     width: 400,
     height: 40,
     borderRadius: 10,
-    marginBottom: 10,
+    margin: 10,
     paddingHorizontal: 10,
   },
   text: {

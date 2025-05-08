@@ -2,10 +2,11 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
   DefaultTheme,
+  DrawerActions,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useNavigation } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -13,6 +14,8 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/components/useColorScheme";
 import AuthProvider from "@/contexts/auth";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
+import { Pressable, StyleSheet } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -65,15 +68,22 @@ function RootLayoutNav() {
     }
   };
 
+  // const toggleMenu = () => navigation.dispatch(DrawerActions.toggleDrawer());
+  // const navigation = useNavigation();
+
   return (
     <SQLiteProvider databaseName="test.db" onInit={createDbIfNeeded}>
       <AuthProvider>
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
+          {/* <Pressable onPress={toggleMenu} style={styles.menu}>
+            <Entypo name="menu" color="#FFF" size={32} />
+          </Pressable> */}
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
             {/* <Stack.Screen
               name="(tabs)/orders"
               options={{ presentation: "card" }}
@@ -96,3 +106,12 @@ function RootLayoutNav() {
     </SQLiteProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  menu: {
+    position: "absolute",
+    right: 32,
+    top: 32,
+    zIndex: 1,
+  },
+});

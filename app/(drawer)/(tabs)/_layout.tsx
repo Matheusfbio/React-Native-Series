@@ -1,6 +1,7 @@
+// app/(drawer)/(tabs)/_layout.tsx
 import React, { useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
+import { Tabs, useNavigation } from "expo-router";
 import {
   Pressable,
   Modal,
@@ -13,6 +14,7 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { StatusBar } from "expo-status-bar";
+import { DrawerActions } from "@react-navigation/native";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -24,6 +26,7 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [isModalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <>
@@ -37,21 +40,7 @@ export default function TabLayout() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <View style={styles.modalOptions}>
-              <Link href="/perfil" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <FontAwesome
-                      name="user"
-                      size={25}
-                      color={Colors[colorScheme ?? "light"].text}
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
-                </Pressable>
-              </Link>
-              <Text>perfil</Text>
-            </View>
+            <Text>Perfil</Text>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
               style={styles.closeButton}
@@ -72,6 +61,13 @@ export default function TabLayout() {
           name="index"
           options={{
             title: "Orçamentos",
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontSize: 20,
+              marginRight: 17,
+              fontWeight: "bold",
+              color: Colors[colorScheme ?? "light"].text,
+            },
             tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
             headerRight: () => (
               <Pressable onPress={() => setModalVisible(true)}>
@@ -81,6 +77,20 @@ export default function TabLayout() {
                     size={25}
                     color={Colors[colorScheme ?? "light"].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            ),
+            headerLeft: () => (
+              <Pressable
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              >
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="navicon"
+                    size={25}
+                    color={Colors[colorScheme ?? "light"].text}
+                    style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
               </Pressable>
@@ -103,29 +113,18 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   modalOverlay: {
-    textAlign: "center",
-    alignItems: "flex-end",
-    alignContent: "center",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalContainer: {
     backgroundColor: "#fff",
     padding: 30,
     justifyContent: "center",
     borderRadius: 10,
-    width: "50%",
+    width: "80%",
     elevation: 10,
-  },
-  modalOptions: {
-    backgroundColor: "#fff",
-    flexDirection: "column",
-    textAlign: "center",
-    borderRadius: 10,
-  },
-  modalTitle: {
-    fontSize: 18,
-    textAlign: "center",
-    fontWeight: "bold",
-    marginBottom: 10,
   },
   closeButton: {
     marginTop: 20,

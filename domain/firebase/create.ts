@@ -1,6 +1,5 @@
-
-import { addDoc, collection, getFirestore } from "firebase/firestore"
-import app from "@/firebaseconfig"
+import { app } from "@/firebaseconfig";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 interface BudgetsItemInterface {
   name: string;
@@ -14,7 +13,7 @@ interface BudgetsItemInterface {
   // updatedAt: string;
 }
 const db = getFirestore(app);
-const budgetsCollection = collection(db,"budgets");
+const budgetsCollection = collection(db, "budgets");
 
 export async function createBudget(budget: BudgetsItemInterface) {
   const dbData = {
@@ -24,6 +23,6 @@ export async function createBudget(budget: BudgetsItemInterface) {
     category: budget.category,
     date: budget.date,
     id: budget.id,
-  }
-  return await addDoc(budgetsCollection, dbData)
+  };
+  return await addDoc(budgetsCollection, dbData);
 }

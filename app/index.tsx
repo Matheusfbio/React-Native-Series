@@ -33,7 +33,7 @@ export default function Login() {
         { text: "Cancelar", style: "cancel" },
         { text: "Sair", onPress: () => BackHandler.exitApp() },
       ]);
-      return true; // Intercepta o botão de voltar
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -109,15 +109,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    // backgroundColor: "#d3d3d3",
+    backgroundColor: "#d3d3d3",
     borderRadius: 10,
     width: 200,
     height: 50,
   },
   input: {
     // textAlign: "center",
-    // borderColor: "#d3d3d3",
-    // backgroundColor: "#d3d3d3",
+    borderColor: "#d3d3d3",
+    backgroundColor: "#d3d3d3",
     borderWidth: 1,
     width: 400,
     height: 40,

@@ -2,7 +2,6 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
   DefaultTheme,
-  DrawerActions,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -57,19 +56,25 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const createDbIfNeeded = async (db: SQLiteDatabase) => {
-    //
-    console.log("Creating database");
+    console.log("Inicializando o banco de dados...");
     try {
+      // Cria a tabela 'users' se ela não existir
+      await db.execAsync(
+        `CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          email TEXT NOT NULL
+        );`
+      );
+
+      // Adiciona a coluna 'image' se ela não existir
       await db.execAsync("ALTER TABLE users ADD COLUMN image TEXT");
     } catch (err) {
       if (!`${err}`.includes("duplicate column")) {
-        console.error("Erro ao adicionar coluna image:", err);
+        console.error("Erro ao inicializar o banco de dados:", err);
       }
     }
   };
-
-  // const toggleMenu = () => navigation.dispatch(DrawerActions.toggleDrawer());
-  // const navigation = useNavigation();
 
   return (
     <SQLiteProvider databaseName="test.db" onInit={createDbIfNeeded}>
@@ -83,7 +88,6 @@ function RootLayoutNav() {
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
             {/* <Stack.Screen
               name="(tabs)/orders"
               options={{ presentation: "card" }}

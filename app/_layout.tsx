@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, useNavigation } from "expo-router";
+import { Slot, Stack, useNavigation } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -15,6 +15,7 @@ import AuthProvider from "@/contexts/auth";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
 import { Pressable, StyleSheet } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import { NotificationProvider } from "@/utils/context/NotificationContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -82,29 +83,20 @@ function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          {/* <Pressable onPress={toggleMenu} style={styles.menu}>
-            <Entypo name="menu" color="#FFF" size={32} />
-          </Pressable> */}
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            {/* <Stack.Screen
-              name="(tabs)/orders"
-              options={{ presentation: "card" }}
-            /> */}
-            <Stack.Screen
-              name="(sign-up)/sign-up"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
-            <Stack.Screen name="cart" options={{ presentation: "modal" }} />
-            {/* <Stack.Screen
-            name="modal"
-            options={{
-              presentation: "modal",
-            }}
-            /> */}
-          </Stack>
+          <NotificationProvider>
+            {/* <Slot /> */}
+            <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="(top-tabs)" options={{ title: "Top Tabs" }} />
+              <Stack.Screen
+                name="(sign-up)/sign-up"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
+              <Stack.Screen name="cart" options={{ presentation: "modal" }} />
+            </Stack>
+          </NotificationProvider>
         </ThemeProvider>
       </AuthProvider>
     </SQLiteProvider>

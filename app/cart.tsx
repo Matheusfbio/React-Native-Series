@@ -1,3 +1,9 @@
+import { useColorScheme } from "@/components/useColorScheme.web";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import React, { useState } from "react";
@@ -68,45 +74,51 @@ export default function Carts() {
     }
   };
 
+  const colorScheme = useColorScheme();
+
   return (
     <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ title: "Cart" }} />
-      <View
-        style={{
-          gap: 20,
-          marginVertical: 20,
-        }}
-      >
-        <TextInput
-          placeholder="Name"
-          value={name}
-          onChangeText={(text) => setName(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          keyboardType="email-address"
-          onChangeText={(text) => setEmail(text)}
-          style={styles.textInput}
-        />
-      </View>
-      <View style={{ flex: 1, flexDirection: "row", gap: 20 }}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={[styles.button, { backgroundColor: "red" }]}
-        >
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={async () => {
-            editMode ? handleUpdate() : handleSave();
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack.Screen options={{ title: "Cart" }} />
+        <View
+          style={{
+            gap: 20,
+            marginVertical: 20,
           }}
-          style={[styles.button, { backgroundColor: "blue" }]}
         >
-          <Text style={styles.buttonText}>{editMode ? "Update" : "Save"}</Text>
-        </TouchableOpacity>
-      </View>
+          <TextInput
+            placeholder="Name"
+            value={name}
+            onChangeText={(text) => setName(text)}
+            style={styles.textInput}
+          />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            keyboardType="email-address"
+            onChangeText={(text) => setEmail(text)}
+            style={styles.textInput}
+          />
+        </View>
+        <View style={{ flex: 1, flexDirection: "row", gap: 20 }}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={[styles.button, { backgroundColor: "red" }]}
+          >
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={async () => {
+              editMode ? handleUpdate() : handleSave();
+            }}
+            style={[styles.button, { backgroundColor: "blue" }]}
+          >
+            <Text style={styles.buttonText}>
+              {editMode ? "Update" : "Save"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ThemeProvider>
     </SafeAreaView>
   );
 }

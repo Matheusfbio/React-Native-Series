@@ -1,4 +1,10 @@
+import { useColorScheme } from "@/components/useColorScheme.web";
 import { AuthContext } from "@/contexts/auth";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useEffect, useState } from "react";
@@ -18,6 +24,7 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const colorScheme = useColorScheme();
 
   const authContext = useContext(AuthContext);
 
@@ -31,65 +38,72 @@ export default function SignIn() {
     signUp(name, email, password);
   };
 
-   useEffect(() => {
-      const backAction = () => {
-        router.replace("/");
-        return true; // Ensure the function returns a boolean
-      };
-  
-      const backHandler = BackHandler.addEventListener(
-        "hardwareBackPress",
-        backAction
-      );
-  
-      return () => backHandler.remove(); // Remove o listener ao desmontar o componente
-    }, []);
+  useEffect(() => {
+    const backAction = () => {
+      router.replace("/");
+      return true; // Ensure the function returns a boolean
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove(); // Remove o listener ao desmontar o componente
+  }, []);
 
   return (
     <>
       <StatusBar style="auto" />
-      <SafeAreaView style={styles.container}>
-        <TextInput
-          placeholder="Digite seu nome"
-          onChangeText={setName}
-          value={name}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Digite seu email"
-          onChangeText={setEmail}
-          value={email}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Digite sua senha"
-          onChangeText={setPassword}
-          value={password}
-          style={styles.input}
-          secureTextEntry
-        />
-        <>
-        {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />) :
-          
-        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-          <Text>Criar</Text>
-        </TouchableOpacity>
-          } 
-        </>
-        <TouchableOpacity
-          onPress={() => router.replace("/")}
-          style={styles.button}
-        >
-          <Text>voltar</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <SafeAreaView style={styles.container}>
+          <TextInput
+            placeholder="Digite seu nome"
+            onChangeText={setName}
+            value={name}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Digite seu email"
+            onChangeText={setEmail}
+            value={email}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Digite sua senha"
+            onChangeText={setPassword}
+            value={password}
+            style={styles.input}
+            secureTextEntry
+          />
+          <>
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+                <Text>Criar</Text>
+              </TouchableOpacity>
+            )}
+          </>
+          <TouchableOpacity
+            onPress={() => router.replace("/")}
+            style={styles.button}
+          >
+            <Text>voltar</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </ThemeProvider>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+  },
   button: {
     marginTop: 10,
     paddingVertical: 10,

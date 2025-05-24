@@ -1,4 +1,10 @@
+import { useColorScheme } from "@/components/useColorScheme.web";
 import { AuthContext } from "@/contexts/auth";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useEffect, useState } from "react";
@@ -15,6 +21,7 @@ import {
 } from "react-native";
 
 export default function Login() {
+  const colorScheme = useColorScheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { signIn } = useContext(AuthContext);
@@ -46,35 +53,43 @@ export default function Login() {
 
   return (
     <>
-      <StatusBar style="auto" />
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.text}>Bem vindo ao OrçaBox</Text>
-        <Text style={styles.text}>Faça o seu login</Text>
-        <TextInput
-          placeholder="Email"
-          onChangeText={setEmail}
-          value={email}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Senha"
-          onChangeText={setPassword}
-          value={password}
-          style={styles.input}
-          secureTextEntry
-        />
-        <View style={styles.buttonLogin}>
-          <TouchableOpacity onPress={handleLogin} style={styles.button}>
-            <Text>Entrar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => router.replace("/(sign-up)/sign-up")}
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <StatusBar style="auto" />
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.text}>Bem vindo ao OrçaBox</Text>
+          <Text style={styles.text}>Faça o seu login</Text>
+          <TextInput
+            placeholder="Email"
+            onChangeText={setEmail}
+            value={email}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Senha"
+            onChangeText={setPassword}
+            value={password}
+            style={styles.input}
+            secureTextEntry
+          />
+          <View style={styles.buttonLogin}>
+            <TouchableOpacity onPress={handleLogin} style={styles.button}>
+              <Text>Entrar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => router.replace("/(sign-up)/sign-up")}
+              style={styles.button}
+            >
+              <Text>Criar conta</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <TouchableOpacity
+            onPress={() => router.replace("/(top-tabs)/")}
             style={styles.button}
           >
-            <Text>Criar conta</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+            <Text>top tab</Text>
+          </TouchableOpacity> */}
+        </SafeAreaView>
+      </ThemeProvider>
     </>
   );
 }
@@ -84,6 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#000",
   },
   buttonLogin: {
     flexDirection: "row",
@@ -93,13 +109,6 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: "flex-start",
     justifyContent: "space-between",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
-    marginBottom: 30,
-    paddingHorizontal: 10,
   },
   button: {
     alignItems: "center",
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 400,
     height: 40,
+    textAlign: "center",
     borderRadius: 10,
     marginBottom: 10,
     paddingHorizontal: 10,
@@ -128,7 +138,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "black",
+    color: "white",
     marginBottom: 30,
     paddingHorizontal: 10,
   },

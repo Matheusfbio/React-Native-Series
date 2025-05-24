@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, router, Tabs } from "expo-router";
 import {
@@ -14,6 +14,8 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { StatusBar } from "expo-status-bar";
+import { AuthContext } from "@/contexts/auth";
+import { TabBar } from "@/components/TabBar";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -23,6 +25,7 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const { user } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -38,7 +41,7 @@ export default function TabLayout() {
       <Modal
         visible={isModalVisible}
         transparent
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
@@ -46,13 +49,14 @@ export default function TabLayout() {
             <View style={styles.modalOptions}>
               <TouchableOpacity onPress={handleNavigateProfile}>
                 <FontAwesome
-                  name="user"
-                  size={25}
+                  name="user-circle-o"
+                  size={40}
                   color={Colors[colorScheme ?? "light"].text}
                   style={{ marginRight: 15 }}
                 />
               </TouchableOpacity>
-              <Text>perfil</Text>
+              <Text>{user?.email}</Text>
+              <Text>Status: {user?.status}</Text>
             </View>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
@@ -65,16 +69,19 @@ export default function TabLayout() {
       </Modal>
 
       <Tabs
+        tabBar={(props) => <TabBar {...props} />}
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: useClientOnlyValue(false, true),
         }}
       >
         <Tabs.Screen
-          name="index"
+          name="(top-tabs)"
           options={{
-            title: "Orçamentos",
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+            title: "",
+            headerTitle: "OrçaBox",
+            headerTitleAlign: "center",
+            // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
             headerRight: () => (
               <Pressable onPress={() => setModalVisible(true)}>
                 {({ pressed }) => (
@@ -92,10 +99,19 @@ export default function TabLayout() {
         <Tabs.Screen
           name="orders"
           options={{
-            title: "Pedidos",
-            tabBarIcon: ({ color }) => (
-              <TabBarIcon name="list-alt" color={color} />
-            ),
+            title: "",
+            // tabBarIcon: ({ color }) => (
+            //   <TabBarIcon name="plus-circle" color={color} />
+            // ),
+          }}
+        />
+        <Tabs.Screen
+          name="checkIn"
+          options={{
+            title: "",
+            // tabBarIcon: ({ color }) => (
+            //   <TabBarIcon name="buysellads" color={color} />
+            // ),
           }}
         />
       </Tabs>
@@ -106,20 +122,25 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   modalOverlay: {
     textAlign: "center",
-    alignItems: "flex-end",
+    alignItems: "center",
     alignContent: "center",
   },
   modalContainer: {
-    backgroundColor: "#fff",
+    // backgroundColor: "red",
+    backgroundColor: "white",
+    textAlign: "center",
+    marginTop: "145%",
     padding: 30,
     justifyContent: "center",
     borderRadius: 10,
-    width: "50%",
+    width: "90%",
     elevation: 10,
   },
   modalOptions: {
-    backgroundColor: "#fff",
+    // backgroundColor: "yellow",
     flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
     textAlign: "center",
     borderRadius: 10,
   },

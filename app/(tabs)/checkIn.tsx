@@ -1,9 +1,11 @@
+import TutorialSlider from "@/components/TutorialSlider";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function CheckIn() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Check-in</Text>
+      {/* <Text style={styles.title}>Check-in</Text> */}
+      {/* <TutorialSlider /> */}
     </View>
   );
 }

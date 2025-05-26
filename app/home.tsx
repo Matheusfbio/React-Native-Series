@@ -1,3 +1,20 @@
+// import TutorialSlider from "@/components/TutorialSlider";
+// import React from "react";
+// import { View, Text, StyleSheet } from "react-native";
+
+// export default function Home() {
+//   return (
+//     <View style={styles.container}>
+//       <TutorialSlider />
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: { flex: 1, justifyContent: "center", alignItems: "center" },
+//   text: { fontSize: 24, fontWeight: "bold" },
+// });
+
 import { useColorScheme } from "@/components/useColorScheme.web";
 import { AuthContext } from "@/contexts/auth";
 import {

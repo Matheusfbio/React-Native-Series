@@ -87,6 +87,8 @@ function RootLayoutNav() {
             {/* <Slot /> */}
             <Stack>
               <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+              <Stack.Screen name="tutorial" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="(top-tabs)" options={{ title: "Top Tabs" }} />
               <Stack.Screen

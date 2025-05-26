@@ -108,6 +108,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="checkIn"
           options={{
+            headerShown: false,
             title: "",
             // tabBarIcon: ({ color }) => (
             //   <TabBarIcon name="buysellads" color={color} />

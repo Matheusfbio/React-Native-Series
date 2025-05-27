@@ -78,7 +78,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="(top-tabs)"
           options={{
-            title: "",
+            title: "Início",
             headerTitle: "OrçaBox",
             headerTitleAlign: "center",
             // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -99,7 +99,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="orders"
           options={{
-            title: "",
+            title: "Criar",
             // tabBarIcon: ({ color }) => (
             //   <TabBarIcon name="plus-circle" color={color} />
             // ),
@@ -109,7 +109,7 @@ export default function TabLayout() {
           name="checkIn"
           options={{
             headerShown: false,
-            title: "",
+            title: "finalizar",
             // tabBarIcon: ({ color }) => (
             //   <TabBarIcon name="buysellads" color={color} />
             // ),

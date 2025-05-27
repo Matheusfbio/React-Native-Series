@@ -5,7 +5,5 @@ export const icon = {
   orders: (props: object) => (
     <Feather name="plus-circle" size={40} {...props} />
   ),
-  checkIn: (props: object) => (
-    <Feather name="shopping-bag" size={40} {...props} />
-  ),
+  checkIn: (props: object) => <Feather name="check" size={40} {...props} />,
 };

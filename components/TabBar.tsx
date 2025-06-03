@@ -88,31 +88,9 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           });
         };
 
-        // const renderLabel = (): ReactNode => {
-        //   if (typeof label === "function") {
-        //     return label({
-        //       focused: isFocused,
-        //       color: isFocused ? colors.primary : colors.text,
-        //       position: "below-icon" as LabelPosition,
-        //       children: route.name,
-        //     });
-        //   }
-
-        //   return (
-        //     <Text style={{ color: isFocused ? colors.primary : colors.text }}>
-        //       {(icon as Record<string, (props: any) => ReactNode>)[
-        //         route.name
-        //       ]?.({
-        //         color: isFocused ? "blue" : "#222",
-        //       })}
-
-        //       {label}
-        //     </Text>
-        //   );
-        // };
-
         return (
           <TabBarButton
+            key={route.key}
             onPress={onPress}
             onLongPress={onLongPress}
             isFocused={isFocused}

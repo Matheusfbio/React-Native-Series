@@ -38,36 +38,6 @@ export default function TabLayout() {
     <>
       <StatusBar style="auto" />
 
-      <Modal
-        visible={isModalVisible}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalOptions}>
-              <TouchableOpacity onPress={handleNavigateProfile}>
-                <FontAwesome
-                  name="user-circle-o"
-                  size={40}
-                  color={Colors[colorScheme ?? "light"].text}
-                  style={{ marginRight: 15 }}
-                />
-              </TouchableOpacity>
-              <Text>{user?.email}</Text>
-              <Text>Status: {user?.status}</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeButtonText}>Fechar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
       <Tabs
         tabBar={(props) => <TabBar {...props} />}
         screenOptions={{
@@ -83,15 +53,17 @@ export default function TabLayout() {
             headerTitleAlign: "center",
             // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
             headerRight: () => (
-              <Pressable onPress={() => setModalVisible(true)}>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="cog"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
+              <Pressable
+                onPress={() => handleNavigateProfile()}
+                style={({ pressed }) => [
+                  { marginRight: 15, opacity: pressed ? 0.5 : 1 },
+                ]}
+              >
+                <FontAwesome
+                  name="cog"
+                  size={25}
+                  color={Colors[colorScheme ?? "light"].text}
+                />
               </Pressable>
             ),
           }}
@@ -100,6 +72,9 @@ export default function TabLayout() {
           name="orders"
           options={{
             title: "Criar",
+            headerTitle: "Criar Orçamento",
+            headerTitleAlign: "center",
+
             // tabBarIcon: ({ color }) => (
             //   <TabBarIcon name="plus-circle" color={color} />
             // ),

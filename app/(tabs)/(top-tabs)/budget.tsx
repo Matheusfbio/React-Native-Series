@@ -1,6 +1,12 @@
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { Stack } from "expo-router";
+import { useColorScheme } from "@/components/useColorScheme.web";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 
 export default function BudgetScreen() {
   const mockBudgets = [
@@ -30,33 +36,34 @@ export default function BudgetScreen() {
       beneficios: ["Suporte full time", "Preview de serviços novos"],
     },
   ];
+  const colorScheme = useColorScheme();
 
   return (
     <SafeAreaView style={{ padding: 16 }}>
-      <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
-
       {/* Planos */}
-      <Text style={styles.title}>Planos</Text>
-      <FlatList
-        data={mockPlans}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.planCard}>
-            <Text style={styles.cliente}>{item.nome}</Text>
-            <Text style={styles.valor}>R$ {item.preco.toFixed(2)}</Text>
-            <View style={styles.benefitsContainer}>
-              {item.beneficios.map((beneficio, index) => (
-                <Text key={index} style={styles.benefit}>
-                  • {beneficio}
-                </Text>
-              ))}
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Text style={styles.title}>Planos</Text>
+        <FlatList
+          data={mockPlans}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.planCard}>
+              <Text style={styles.cliente}>{item.nome}</Text>
+              <Text style={styles.valor}>R$ {item.preco.toFixed(2)}</Text>
+              <View style={styles.benefitsContainer}>
+                {item.beneficios.map((beneficio, index) => (
+                  <Text key={index} style={styles.benefit}>
+                    • {beneficio}
+                  </Text>
+                ))}
+              </View>
             </View>
-          </View>
-        )}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ marginBottom: 24 }}
-      />
+          )}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginBottom: 24 }}
+        />
+      </ThemeProvider>
     </SafeAreaView>
   );
 }

@@ -22,7 +22,7 @@ export function TabBarButton({
   onPress: () => void;
   onLongPress: () => void;
   isFocused: boolean;
-  routeName: IconKeys;
+  routeName: string;
   color: string;
   label: string;
 }) {
@@ -60,7 +60,7 @@ export function TabBarButton({
         <Animated.Text
           style={[
             {
-              color: isFocused ? "blue" : "black",
+              color: isFocused ? "white" : "black",
               fontSize: 12,
               textAlign: "center",
             },
@@ -76,38 +76,6 @@ export function TabBarButton({
 }
 
 const styles = StyleSheet.create({
-  // tabbar: {
-
-  // position: "absolute",
-
-  // bottom: 50,
-
-  // flexDirection: "row",
-
-  // justifyContent: "space-between",
-
-  // alignItems: "center",
-
-  // backgroundColor: "#fff",
-
-  // marginHorizontal: 110,
-
-  // marginVertical: 40,
-
-  // paddingVertical: 15,
-
-  // borderRadius: 35,
-
-  // shadowColor: "#000",
-
-  // shadowOffset: { width: 0, height: 10 },
-
-  // shadowRadius: 10,
-
-  // shadowOpacity: 0.1,
-
-  // },
-
   tabbarItem: {
     flex: 1,
     justifyContent: "center",

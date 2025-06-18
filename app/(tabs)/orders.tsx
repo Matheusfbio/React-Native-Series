@@ -60,7 +60,7 @@ export default function Orders() {
   );
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack.Screen options={{ headerRight }} />
         <View>
@@ -74,13 +74,27 @@ export default function Orders() {
               <View style={{ padding: 10 }}>
                 <View
                   style={{
+                    borderRadius: 10,
+                    padding: 10,
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
                   <View>
-                    <Text>{item.name}</Text>
-                    <Text>{item.email}</Text>
+                    <Text
+                      style={{
+                        color: colorScheme === "dark" ? "#333" : "#fff",
+                      }}
+                    >
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: colorScheme === "dark" ? "#333" : "#fff",
+                      }}
+                    >
+                      {item.email}
+                    </Text>
                   </View>
                   <TouchableOpacity
                     onPress={() => {

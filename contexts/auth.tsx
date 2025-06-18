@@ -83,7 +83,7 @@ export default function AuthProvider({ children }: any) {
           "true"
         );
 
-        Alert.alert(`Bem-vindo, ${foundUser.name}!`);
+        // Alert.alert(`Bem-vindo, ${foundUser.name}!`);
         router.replace("/(tabs)");
         return;
       }
@@ -143,7 +143,7 @@ export default function AuthProvider({ children }: any) {
 
       // Redireciona para a tela principal (login)
       router.replace("/");
-      Alert.alert("Você saiu com sucesso!");
+      // Alert.alert("Você saiu com sucesso!");
     } catch (error) {
       console.error("Erro ao sair", error);
     }

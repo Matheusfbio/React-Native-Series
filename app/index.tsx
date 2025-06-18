@@ -10,7 +10,7 @@ export default function Index() {
     const checkTutorial = async () => {
       const hasSeen = await AsyncStorage.getItem("hasSeenTutorial");
 
-      if (hasSeen === "false") {
+      if (hasSeen === "true") {
         router.replace("/login");
       } else {
         router.replace("/tutorial"); // 👈 redireciona para o tutorial

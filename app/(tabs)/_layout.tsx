@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Button,
+  ScrollView,
 } from "react-native";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -37,7 +38,20 @@ export default function TabLayout() {
   return (
     <>
       <StatusBar style="auto" />
-
+      {/* <ScrollView style={{ flex: 1 }}>
+          <Text
+            style={{
+              color: Colors[colorScheme ?? "light"].text,
+              fontSize: 20,
+              fontWeight: "bold",
+              margin: 10,
+              textAlign: "center",
+              marginTop: 50,
+            }}
+          >
+            Início
+          </Text>
+        </ScrollView> */}
       <Tabs
         tabBar={(props) => <TabBar {...props} />}
         screenOptions={{
@@ -46,11 +60,16 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="(top-tabs)"
+          name="index"
           options={{
-            title: "Início",
-            headerTitle: "OrçaBox",
-            headerTitleAlign: "center",
+            headerShown: false,
+            title: "",
+            headerTitle: `Olá, ${user?.name}`,
+            headerTitleAlign: "left",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
             // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
             headerRight: () => (
               <Pressable
@@ -60,7 +79,7 @@ export default function TabLayout() {
                 ]}
               >
                 <FontAwesome
-                  name="cog"
+                  name="user-circle-o"
                   size={25}
                   color={Colors[colorScheme ?? "light"].text}
                 />
@@ -71,7 +90,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="orders"
           options={{
-            title: "Criar",
+            title: "",
             headerTitle: "Criar Orçamento",
             headerTitleAlign: "center",
 
@@ -84,7 +103,7 @@ export default function TabLayout() {
           name="checkIn"
           options={{
             headerShown: false,
-            title: "finalizar",
+            title: "",
             // tabBarIcon: ({ color }) => (
             //   <TabBarIcon name="buysellads" color={color} />
             // ),

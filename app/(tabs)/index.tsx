@@ -1,11 +1,12 @@
 import { useColorScheme } from "@/components/useColorScheme.web";
+import type Colors from "@/constants/Colors";
 import { AuthContext } from "@/contexts/auth";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -16,11 +17,12 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
 
-export default function Login() {
+export default function Home() {
   const colorScheme = useColorScheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -56,38 +58,16 @@ export default function Login() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="inverted" />
         <SafeAreaView style={styles.container}>
-          <Text style={styles.text}>Bem vindo ao OrçaBox</Text>
-          <Text style={styles.text}>Faça o seu login</Text>
-          <TextInput
-            placeholder="Email"
-            onChangeText={setEmail}
-            value={email}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Senha"
-            onChangeText={setPassword}
-            value={password}
-            style={styles.input}
-            secureTextEntry
-          />
-          <View style={styles.buttonLogin}>
-            <TouchableOpacity onPress={handleLogin} style={styles.button}>
-              <Text>Entrar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => router.replace("/(sign-up)/sign-up")}
-              style={styles.button}
-            >
-              <Text>Criar conta</Text>
-            </TouchableOpacity>
-          </View>
-          {/* <TouchableOpacity
-            onPress={() => router.replace("/(top-tabs)/")}
-            style={styles.button}
-          >
-            <Text>top tab</Text>
-          </TouchableOpacity> */}
+          <Text style={styles.headerText}>Ola, bem vindo de volta</Text>
+          <View
+            style={{
+              width: "100%",
+              borderRadius: 60,
+              marginBottom: -80,
+              height: "70%",
+              backgroundColor: "#fff",
+            }}
+          ></View>
         </SafeAreaView>
       </ThemeProvider>
     </>
@@ -99,27 +79,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000",
+    backgroundColor: "#00D09E",
   },
   buttonLogin: {
-    flexDirection: "row",
     width: "100%",
     paddingHorizontal: 10,
-    paddingVertical: 20,
     gap: 10,
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "space-between",
   },
   button: {
     alignItems: "center",
-    // flexDirection:0 "row",
-    // marginTop: 20,
-    // margin: 16,
     textAlign: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    backgroundColor: "#d3d3d3",
-    borderRadius: 10,
+    backgroundColor: "#490",
+    borderRadius: 50,
     width: 200,
     height: 50,
   },
@@ -132,14 +107,29 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: "center",
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 90,
     paddingHorizontal: 10,
   },
-  text: {
-    fontSize: 20,
+  headerText: {
+    // backgroundColor: "red",
+    // width: "10%",
+    // textAlign: "center",
+    fontSize: 15,
     fontWeight: "bold",
-    color: "white",
+    color: "black",
+    marginBottom: 60,
+    marginTop: 150,
+  },
+  subText: {
+    fontSize: 15,
+    fontWeight: "black",
+    color: "black",
     marginBottom: 30,
     paddingHorizontal: 10,
+  },
+  emailAndPasswordField: {
+    marginHorizontal: 15,
+    // backgroundColor: "red",
+    textAlign: "left",
   },
 });

@@ -22,26 +22,18 @@ import {
   View,
 } from "react-native";
 
-export default function Login() {
+export default function ScreenDefault() {
   const colorScheme = useColorScheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     if (!email || !password) {
       Alert.alert("Preencha todos os campos!");
       return;
     }
-    setLoading(true); // inicia o loading
-    try {
-      await signIn(email, password); // supondo que signIn é async
-      // Se quiser, pode navegar aqui após sucesso
-    } catch (e) {
-      // Trate o erro se necessário
-    }
-    setLoading(false); // encerra o loading
+    signIn(email, password);
   };
 
   useEffect(() => {
@@ -107,27 +99,18 @@ export default function Login() {
               />
             </SafeAreaView>
             <View style={styles.buttonLogin}>
-              {loading ? (
-                <ActivityIndicator
-                  size="large"
-                  color="#00D09E"
-                  style={styles.button}
-                />
-              ) : (
-                <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                  <Text style={{ fontSize: 19 }}>Log in</Text>
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                <Text style={{ fontSize: 19 }}>Log in</Text>
+              </TouchableOpacity>
 
               <TouchableOpacity
                 style={{ marginTop: 1, padding: 12 }}
-                onPress={() => router.replace("/recovery")}
-                // onPress={() =>
-                //   ToastAndroid.show(
-                //     "Funcionalidade em breve",
-                //     ToastAndroid.SHORT
-                //   )
-                // }
+                onPress={() =>
+                  ToastAndroid.show(
+                    "Funcionalidade em breve",
+                    ToastAndroid.SHORT
+                  )
+                }
               >
                 <Text>Esqueceu a sua senha?</Text>
               </TouchableOpacity>

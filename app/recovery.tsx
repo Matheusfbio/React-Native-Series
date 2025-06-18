@@ -22,7 +22,7 @@ import {
   View,
 } from "react-native";
 
-export default function Login() {
+export default function Recovery() {
   const colorScheme = useColorScheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -66,7 +66,7 @@ export default function Login() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="inverted" />
         <SafeAreaView style={styles.container}>
-          <Text style={styles.headerText}>Bem vindo</Text>
+          <Text style={styles.headerText}>Resetar senha</Text>
           <View
             style={{
               width: "100%",
@@ -77,8 +77,8 @@ export default function Login() {
             }}
           >
             <SafeAreaView style={styles.emailAndPasswordField}>
-              <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 12 }}>
-                Email
+              <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 4 }}>
+                Entre com email
               </Text>
               <TextInput
                 placeholder="example@example.com"
@@ -92,18 +92,8 @@ export default function Login() {
                   height: 40,
                   textAlign: "center",
                   borderRadius: 10,
-                  marginBottom: 10,
+                  marginBottom: 40,
                 }}
-              />
-              <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 12 }}>
-                Senha
-              </Text>
-              <TextInput
-                placeholder="********"
-                onChangeText={setPassword}
-                value={password}
-                style={styles.input}
-                secureTextEntry
               />
             </SafeAreaView>
             <View style={styles.buttonLogin}>
@@ -115,22 +105,9 @@ export default function Login() {
                 />
               ) : (
                 <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                  <Text style={{ fontSize: 19 }}>Log in</Text>
+                  <Text style={{ fontSize: 19 }}>Proximo</Text>
                 </TouchableOpacity>
               )}
-
-              <TouchableOpacity
-                style={{ marginTop: 1, padding: 12 }}
-                onPress={() => router.replace("/recovery")}
-                // onPress={() =>
-                //   ToastAndroid.show(
-                //     "Funcionalidade em breve",
-                //     ToastAndroid.SHORT
-                //   )
-                // }
-              >
-                <Text>Esqueceu a sua senha?</Text>
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => router.replace("/(sign-up)/sign-up")}
                 style={styles.button}
@@ -150,29 +127,6 @@ export default function Login() {
                 >
                   Criar conta
                 </Text>
-              </TouchableOpacity>
-            </View>
-            {/* <TouchableOpacity
-            onPress={() => router.replace("/(top-tabs)/")}
-            style={styles.button}
-            >
-            <Text>top tab</Text>
-            </TouchableOpacity> */}
-            {/* <TouchableOpacity style={{ marginTop: 1, padding: 12 }}> */}
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginVertical: 20,
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <Text>Nâo tem conta, </Text>
-              <TouchableOpacity
-                onPress={() => router.replace("/(sign-up)/sign-up")}
-              >
-                <Text>crie agora</Text>
               </TouchableOpacity>
             </View>
           </View>

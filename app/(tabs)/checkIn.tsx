@@ -1,12 +1,20 @@
-import TutorialSlider from "@/components/TutorialSlider";
+import { useColorScheme } from "@/components/useColorScheme.web";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function CheckIn() {
+  const colorScheme = useColorScheme();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Check-in</Text>
-      {/* <TutorialSlider /> */}
-    </View>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Check-in</Text>
+      </View>
+    </ThemeProvider>
   );
 }
 
@@ -18,7 +26,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    // color: "white",
+    color: "white",
     fontWeight: "bold",
   },
 });

@@ -31,7 +31,7 @@ export function TabBarButton({
   useEffect(() => {
     scale.value = withSpring(
       typeof isFocused === "boolean" ? (isFocused ? 1 : 0) : isFocused,
-      { duration: 350 }
+      { duration: 250 }
     );
   }, [isFocused, scale]);
 
@@ -41,8 +41,8 @@ export function TabBarButton({
   });
 
   const animatedIconStyle = useAnimatedStyle(() => {
-    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.2]);
-    const top = interpolate(scale.value, [0, 1], [0, 9]);
+    const scaleValue = interpolate(scale.value, [3, 1], [1, 1.2]);
+    const top = interpolate(scale.value, [1, 1], [0, 9]);
     return { transform: [{ scale: scaleValue }], top };
   });
 
@@ -53,18 +53,21 @@ export function TabBarButton({
       style={styles.tabbarItem}
     >
       <Animated.View style={animatedIconStyle}>
-        {icon[routeName]({
-          color: isFocused ? "white" : "black",
-        })}
-
+        {
+          icon[routeName as IconKeys]
+            ? icon[routeName as IconKeys]({
+                color: isFocused ? "white" : "black",
+              })
+            : null /* ou um ícone padrão, se quiser */
+        }
         <Animated.Text
           style={[
             {
               color: isFocused ? "white" : "black",
               fontSize: 12,
               textAlign: "center",
+              marginTop: -15,
             },
-
             animatedTextStyle,
           ]}
         >

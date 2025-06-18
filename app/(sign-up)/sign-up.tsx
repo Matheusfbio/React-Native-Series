@@ -17,6 +17,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function SignIn() {
@@ -41,7 +42,11 @@ export default function SignIn() {
   useEffect(() => {
     const backAction = () => {
       router.replace("/");
-      return true; // Ensure the function returns a boolean
+      // Alert.alert("Sair do aplicativo", "Você tem certeza que deseja sair?", [
+      //   { text: "Cancelar", style: "cancel" },
+      //   { text: "Sair", onPress: () => BackHandler.exitApp() },
+      // ]);
+      return true; // Ensure the fxunction returns a boolean
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -57,40 +62,60 @@ export default function SignIn() {
       <StatusBar style="auto" />
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <SafeAreaView style={styles.container}>
-          <TextInput
-            placeholder="Digite seu nome"
-            onChangeText={setName}
-            value={name}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Digite seu email"
-            onChangeText={setEmail}
-            value={email}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Digite sua senha"
-            onChangeText={setPassword}
-            value={password}
-            style={styles.input}
-            secureTextEntry
-          />
-          <>
-            {isLoading ? (
-              <ActivityIndicator size="large" color="#0000ff" />
-            ) : (
-              <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                <Text>Criar</Text>
-              </TouchableOpacity>
-            )}
-          </>
-          <TouchableOpacity
-            onPress={() => router.replace("/")}
-            style={styles.button}
+          <Text style={styles.headerText}>Criar conta</Text>
+          <View
+            style={{
+              width: "100%",
+              paddingVertical: 80,
+              borderRadius: 60,
+              height: "80%",
+              backgroundColor: "#fff",
+            }}
           >
-            <Text>voltar</Text>
-          </TouchableOpacity>
+            <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 28 }}>
+              Nome completo
+            </Text>
+            <TextInput
+              placeholder="João da Silva"
+              onChangeText={setName}
+              value={name}
+              style={styles.input}
+            />
+            <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 28 }}>
+              Email
+            </Text>
+            <TextInput
+              placeholder="exemplo@email.com"
+              onChangeText={setEmail}
+              value={email}
+              style={styles.input}
+            />
+            <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 28 }}>
+              Senha
+            </Text>
+            <TextInput
+              placeholder="********"
+              onChangeText={setPassword}
+              value={password}
+              style={styles.input}
+              secureTextEntry
+            />
+            <>
+              {isLoading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+              ) : (
+                <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+                  <Text style={{ fontSize: 19 }}>Criar</Text>
+                </TouchableOpacity>
+              )}
+            </>
+            <TouchableOpacity
+              onPress={() => router.navigate("/")}
+              style={styles.button}
+            >
+              <Text style={{ fontSize: 19 }}>voltar</Text>
+            </TouchableOpacity>
+          </View>
         </SafeAreaView>
       </ThemeProvider>
     </>
@@ -102,24 +127,51 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000",
+    backgroundColor: "#00D09E",
   },
   button: {
-    marginTop: 10,
+    alignItems: "center",
+    marginHorizontal: 120,
+    marginVertical: 10,
+    textAlign: "center",
+    justifyContent: "center",
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#d3d3d3",
-    borderRadius: 10,
+    backgroundColor: "#490",
+    borderRadius: 50,
+    width: 200,
+    height: 50,
   },
   input: {
-    borderWidth: 1,
-    width: 250,
-    height: 40,
     borderColor: "#d3d3d3",
     backgroundColor: "#d3d3d3",
+    borderWidth: 1,
+    alignSelf: "center",
+    width: 400,
+    height: 40,
+    textAlign: "center",
     borderRadius: 10,
-    textShadowColor: "#d3d3d3",
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  headerText: {
+    width: "100%",
+    textAlign: "center",
+    fontSize: 35,
+    fontWeight: "bold",
+    color: "black",
+    marginBottom: 60,
+    marginTop: 150,
+  },
+  subText: {
+    fontSize: 15,
+    fontWeight: "black",
+    color: "black",
+    marginBottom: 30,
+    paddingHorizontal: 10,
+  },
+  emailAndPasswordField: {
+    marginHorizontal: 15,
+    // backgroundColor: "red",
+    textAlign: "left",
   },
 });

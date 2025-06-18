@@ -25,15 +25,15 @@ export const MaterialTopTabs = withLayoutContext<
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   return (
-    <MaterialTopTabs>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <MaterialTopTabs.Screen name="index" options={{ title: "Simples" }} />
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <MaterialTopTabs>
+        <MaterialTopTabs.Screen name="index" options={{ title: "Diario" }} />
         <MaterialTopTabs.Screen
           name="fixedCuston"
-          options={{ title: "Personalizado" }}
+          options={{ title: "Mensal" }}
         />
-        <MaterialTopTabs.Screen name="budget" options={{ title: "planos" }} />
-      </ThemeProvider>
-    </MaterialTopTabs>
+        <MaterialTopTabs.Screen name="budget" options={{ title: "Anual" }} />
+      </MaterialTopTabs>
+    </ThemeProvider>
   );
 }

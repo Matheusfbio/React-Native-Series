@@ -14,7 +14,7 @@ import AuthProvider from "@/contexts/auth";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
 import { Pressable, StyleSheet } from "react-native";
 import { NotificationProvider } from "@/utils/context/NotificationContext";
-import Tutorial from ".";
+import Tutorial from "./tutorial";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export {
@@ -76,12 +76,14 @@ export default function RootLayoutNav() {
           <NotificationProvider>
             <Stack>
               <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="tutorial" options={{ headerShown: false }} />
               <Stack.Screen name="login" options={{ headerShown: false }} />
+              <Stack.Screen name="recovery" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="(top-tabs)"
                 options={{ headerShown: false }}
-              />
+              /> */}
               <Stack.Screen
                 name="(sign-up)/sign-up"
                 options={{ headerShown: false }}

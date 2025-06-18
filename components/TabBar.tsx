@@ -4,17 +4,13 @@ import {
   StyleSheet,
   Pressable,
   type LayoutChangeEvent,
-  useAnimatedValue,
 } from "react-native";
 
 import { useLinkBuilder, useTheme } from "@react-navigation/native";
-import { Text } from "@react-navigation/elements";
 import { type BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { Feather } from "@expo/vector-icons";
 import { useState, type ReactNode } from "react";
 import type { LabelPosition } from "@react-navigation/bottom-tabs/lib/typescript/src/types";
 import { TabBarButton } from "./TabBarButton";
-import { icon } from "@/constants/icons";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -94,7 +90,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             onPress={onPress}
             onLongPress={onLongPress}
             isFocused={isFocused}
-            routeName={route.name as "(top-tabs)" | "orders" | "checkIn"}
+            routeName={route.name}
             color={isFocused ? "green" : "black"}
             label={typeof label === "function" ? route.name : label}
           />

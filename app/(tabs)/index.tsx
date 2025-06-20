@@ -1,6 +1,7 @@
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
 import { AuthContext } from "@/contexts/auth";
+import { FontAwesome } from "@expo/vector-icons";
 import {
   DarkTheme,
   DefaultTheme,
@@ -12,7 +13,12 @@ import { useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Animated,
   BackHandler,
+  Button,
+  Dimensions,
+  Easing,
+  Modal,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -27,6 +33,30 @@ export default function Home() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { signIn } = useContext(AuthContext);
+  const [modalVisible, setModalVisible] = useState(false);
+  const screenHeight = Dimensions.get("window").height;
+  const [animation] = useState(new Animated.Value(screenHeight));
+
+  const openModal = () => {
+    setModalVisible(true);
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 400,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeModal = () => {
+    Animated.timing(animation, {
+      toValue: screenHeight,
+      duration: 300,
+      easing: Easing.in(Easing.ease),
+      useNativeDriver: true,
+    }).start(() => {
+      setModalVisible(false);
+    });
+  };
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -59,6 +89,38 @@ export default function Home() {
         <StatusBar style="inverted" />
         <SafeAreaView style={styles.container}>
           <Text style={styles.headerText}>Ola, bem vindo de volta</Text>
+          <TouchableOpacity
+            style={{ backgroundColor: "#fff", borderRadius: 40, padding: 10 }}
+            onPress={openModal}
+          >
+            <FontAwesome name="bell-o" size={30} />
+          </TouchableOpacity>
+
+          {modalVisible && (
+            <Modal transparent animationType="none" visible={modalVisible}>
+              <View style={styles.modalOverlay}>
+                <Animated.View
+                  style={[
+                    styles.modalContent,
+                    {
+                      transform: [{ translateY: animation }],
+                    },
+                  ]}
+                >
+                  <Text style={{ marginBottom: 20 }}>
+                    Este é o conteúdo do modal!
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={closeModal}
+                  >
+                    <Text style={styles.closeText}>Fechar</Text>
+                  </TouchableOpacity>
+                </Animated.View>
+              </View>
+            </Modal>
+          )}
+
           <View
             style={{
               width: "100%",
@@ -131,5 +193,36 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     // backgroundColor: "red",
     textAlign: "left",
+  },
+  modalOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    // backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modalContent: {
+    backgroundColor: "#ededed",
+    paddingVertical: "20%",
+    marginTop: "30%",
+    borderRadius: 30,
+    alignItems: "center",
+    width: "100%",
+    height: "90%",
+    justifyContent: "center",
+  },
+  closeButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: "#00D09E",
+    borderRadius: 5,
+  },
+  closeText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });

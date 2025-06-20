@@ -56,17 +56,17 @@ export function TabBarButton({
         {
           icon[routeName as IconKeys]
             ? icon[routeName as IconKeys]({
-                color: isFocused ? "white" : "black",
+                color: isFocused ? "#fff" : "black",
               })
             : null /* ou um ícone padrão, se quiser */
         }
         <Animated.Text
           style={[
             {
-              color: isFocused ? "white" : "black",
+              color: isFocused ? "#fff" : "black",
               fontSize: 12,
               textAlign: "center",
-              marginTop: -15,
+              marginTop: -13,
             },
             animatedTextStyle,
           ]}

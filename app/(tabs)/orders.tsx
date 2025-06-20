@@ -83,14 +83,14 @@ export default function Orders() {
                   <View>
                     <Text
                       style={{
-                        color: colorScheme === "dark" ? "#333" : "#fff",
+                        color: colorScheme === "dark" ? "#fff" : "#000",
                       }}
                     >
                       {item.name}
                     </Text>
                     <Text
                       style={{
-                        color: colorScheme === "dark" ? "#333" : "#fff",
+                        color: colorScheme === "dark" ? "#fff" : "#000",
                       }}
                     >
                       {item.email}

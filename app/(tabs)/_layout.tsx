@@ -93,10 +93,6 @@ export default function TabLayout() {
             title: "",
             headerTitle: "Criar Orçamento",
             headerTitleAlign: "center",
-
-            // tabBarIcon: ({ color }) => (
-            //   <TabBarIcon name="plus-circle" color={color} />
-            // ),
           }}
         />
         <Tabs.Screen
@@ -104,9 +100,13 @@ export default function TabLayout() {
           options={{
             headerShown: false,
             title: "",
-            // tabBarIcon: ({ color }) => (
-            //   <TabBarIcon name="buysellads" color={color} />
-            // ),
+          }}
+        />
+        <Tabs.Screen
+          name="perfil"
+          options={{
+            headerShown: false,
+            title: "",
           }}
         />
       </Tabs>

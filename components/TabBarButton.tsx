@@ -6,7 +6,6 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { useEffect } from "react";
-import { AnimatedText } from "react-native-reanimated/lib/typescript/component/Text";
 import { icon } from "@/constants/icons";
 
 type IconKeys = keyof typeof icon;

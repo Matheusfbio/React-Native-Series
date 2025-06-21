@@ -12,6 +12,6 @@
     "**/*.ts",
     "**/*.tsx",
     "nativewind-env.d.ts",
-    "app/(tabs)/itsx"
+    "app/(tabs)/itsxsx"
   ]
 }

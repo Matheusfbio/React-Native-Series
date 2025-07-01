@@ -24,7 +24,7 @@ export default function Perfil() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      router.replace("/");
+      router.replace("../login");
     } catch (error) {
       console.error("Erro ao sair:", error);
     } finally {

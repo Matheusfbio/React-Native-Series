@@ -1,5 +1,8 @@
+import FinanceCard from "@/components/FinanceCard";
+import GoalProgressCard from "@/components/GoalProgressCard";
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
+import MocksData, { mocks } from "@/constants/mocks";
 import { AuthContext } from "@/contexts/auth";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -88,14 +91,31 @@ export default function Home() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="inverted" />
         <SafeAreaView style={styles.container}>
-          <Text style={styles.headerText}>Ola, bem vindo de volta</Text>
-          <TouchableOpacity
-            style={{ backgroundColor: "#fff", borderRadius: 40, padding: 10 }}
-            onPress={openModal}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 200,
+              paddingHorizontal: 1,
+              padding: 22,
+              height: "10%",
+              width: "90%",
+            }}
           >
-            <FontAwesome name="bell-o" size={30} />
-          </TouchableOpacity>
-
+            <View>
+              <Text style={{ fontSize: 24 }}>Olá, bem vindo</Text>
+              <Text style={{ fontFamily: "monospace", fontSize: 17 }}>
+                Bom dia
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{ backgroundColor: "#fff", borderRadius: 40, padding: 9 }}
+              onPress={openModal}
+            >
+              <FontAwesome name="bell-o" size={20} />
+            </TouchableOpacity>
+          </View>
           {modalVisible && (
             <Modal transparent animationType="none" visible={modalVisible}>
               <View style={styles.modalOverlay}>
@@ -129,7 +149,19 @@ export default function Home() {
               height: "70%",
               backgroundColor: "#fff",
             }}
-          ></View>
+          >
+            <View
+              style={{
+                flex: 0.2,
+                width: "83%",
+                marginTop: 30,
+                marginLeft: "8.5%",
+                borderRadius: 40,
+              }}
+            >
+              <FinanceCard />
+            </View>
+          </View>
         </SafeAreaView>
       </ThemeProvider>
     </>
@@ -173,7 +205,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   headerText: {
-    // backgroundColor: "red",
+    backgroundColor: "red",
     // width: "10%",
     // textAlign: "center",
     fontSize: 15,

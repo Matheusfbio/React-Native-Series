@@ -83,14 +83,14 @@ export default function Orders() {
                   <View>
                     <Text
                       style={{
-                        color: colorScheme === "dark" ? "#fff" : "#000",
+                        color: colorScheme === "dark" ? "#fff" : "#fff",
                       }}
                     >
                       {item.name}
                     </Text>
                     <Text
                       style={{
-                        color: colorScheme === "dark" ? "#fff" : "#000",
+                        color: colorScheme === "dark" ? "#fff" : "#fff",
                       }}
                     >
                       {item.email}
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     width: 70,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 200,
+    marginLeft: "20%",
     borderRadius: 5,
     backgroundColor: "blue",
   },

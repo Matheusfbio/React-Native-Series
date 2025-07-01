@@ -45,9 +45,9 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             position: "absolute",
             backgroundColor: "green",
             borderRadius: 22,
-            marginHorizontal: 8,
-            height: buttonWidth - 15,
-            width: buttonWidth - 15,
+            marginHorizontal: 2.5,
+            height: buttonWidth - 5,
+            width: buttonWidth - 5,
           },
         ]}
       />

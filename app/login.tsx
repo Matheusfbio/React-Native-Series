@@ -1,6 +1,7 @@
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
 import { AuthContext } from "@/contexts/auth";
+import { SimpleLineIcons } from "@expo/vector-icons";
 import {
   DarkTheme,
   DefaultTheme,
@@ -152,13 +153,6 @@ export default function Login() {
                 </Text>
               </TouchableOpacity>
             </View>
-            {/* <TouchableOpacity
-            onPress={() => router.replace("/(top-tabs)/")}
-            style={styles.button}
-            >
-            <Text>top tab</Text>
-            </TouchableOpacity> */}
-            {/* <TouchableOpacity style={{ marginTop: 1, padding: 12 }}> */}
             <View
               style={{
                 flexDirection: "row",
@@ -175,6 +169,31 @@ export default function Login() {
                 <Text>crie agora</Text>
               </TouchableOpacity>
             </View>
+            <Text
+              style={{
+                marginLeft: "40%",
+                marginBottom: 15,
+                marginTop: 2,
+                fontFamily: "monospace",
+              }}
+            >
+              Ou entre com
+            </Text>
+            <TouchableOpacity
+              style={{
+                // backgroundColor: "red",
+                width: "10%",
+                marginHorizontal: "45%",
+              }}
+              onPress={() =>
+                ToastAndroid.show(
+                  "Não esta funcionando no momento",
+                  ToastAndroid.SHORT
+                )
+              }
+            >
+              <SimpleLineIcons name="social-google" size={44} />
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </ThemeProvider>

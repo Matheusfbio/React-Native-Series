@@ -142,7 +142,7 @@ export default function AuthProvider({ children }: any) {
       setUser(null);
 
       // Redireciona para a tela principal (login)
-      router.replace("/");
+      router.replace("../");
       // Alert.alert("Você saiu com sucesso!");
     } catch (error) {
       console.error("Erro ao sair", error);

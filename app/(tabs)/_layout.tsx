@@ -96,7 +96,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="checkIn"
+          name="category"
           options={{
             headerShown: false,
             title: "",

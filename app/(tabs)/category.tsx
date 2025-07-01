@@ -26,7 +26,7 @@ import {
   View,
 } from "react-native";
 
-export default function ScreenDefault() {
+export default function category() {
   const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
   const screenHeight = Dimensions.get("window").height;
@@ -59,7 +59,6 @@ export default function ScreenDefault() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <StatusBar style="auto" />
         <SafeAreaView style={styles.container}>
-          {" "}
           <View
             style={{
               // backgroundColor: "red",
@@ -75,10 +74,7 @@ export default function ScreenDefault() {
             }}
           >
             <View>
-              <Text style={{ fontSize: 24 }}>Olá, bem vindo</Text>
-              <Text style={{ fontFamily: "monospace", fontSize: 17 }}>
-                Bom dia
-              </Text>
+              <Text style={{ fontSize: 24 }}>Categoria</Text>
             </View>
             <TouchableOpacity
               style={{ backgroundColor: "#fff", borderRadius: 40, padding: 9 }}

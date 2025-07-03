@@ -10,6 +10,9 @@ import {
   TouchableOpacity,
   Button,
   ScrollView,
+  Dimensions,
+  Animated,
+  Easing,
 } from "react-native";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -28,30 +31,39 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const { user } = useContext(AuthContext);
   const colorScheme = useColorScheme();
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const screenHeight = Dimensions.get("window").height;
+  const [animation] = useState(new Animated.Value(screenHeight));
 
-  const handleNavigateProfile = () => {
-    setModalVisible(false);
-    router.push("/perfil");
+  // const handleNavigateProfile = () => {
+  //   setModalVisible(false);
+  //   router.push("/perfil");
+  // };
+
+  const openModal = () => {
+    setModalVisible(true);
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 400,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeModal = () => {
+    Animated.timing(animation, {
+      toValue: screenHeight,
+      duration: 300,
+      easing: Easing.in(Easing.ease),
+      useNativeDriver: true,
+    }).start(() => {
+      setModalVisible(false);
+    });
   };
 
   return (
     <>
       <StatusBar style="auto" />
-      {/* <ScrollView style={{ flex: 1 }}>
-          <Text
-            style={{
-              color: Colors[colorScheme ?? "light"].text,
-              fontSize: 20,
-              fontWeight: "bold",
-              margin: 10,
-              textAlign: "center",
-              marginTop: 50,
-            }}
-          >
-            Início
-          </Text>
-        </ScrollView> */}
       <Tabs
         tabBar={(props) => <TabBar {...props} />}
         screenOptions={{
@@ -62,9 +74,51 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            headerShown: false,
             title: "",
-            headerTitle: `Olá, ${user?.name}`,
+            headerShown: true,
+            headerTransparent: true,
+            headerStyle: { backgroundColor: "#00D09E" },
+            headerTitle: () => (
+              <>
+                <View>
+                  <Text style={{ color: "white", fontSize: 22 }}>
+                    Olá, Bem Vindo
+                  </Text>
+                  <Text style={{ color: "white", fontFamily: "monospace" }}>
+                    Bom dia
+                  </Text>
+                </View>
+                {modalVisible && (
+                  <Modal
+                    transparent
+                    animationType="none"
+                    visible={modalVisible}
+                  >
+                    <View style={styles.modalOverlay}>
+                      <Animated.View
+                        style={[
+                          styles.modalContent,
+                          {
+                            transform: [{ translateY: animation }],
+                          },
+                        ]}
+                      >
+                        <Text style={styles.modalTitle}>
+                          Este é o conteúdo do modal!
+                        </Text>
+
+                        <TouchableOpacity
+                          style={styles.closeButton}
+                          onPress={closeModal}
+                        >
+                          <Text style={styles.closeButtonText}>Fechar</Text>
+                        </TouchableOpacity>
+                      </Animated.View>
+                    </View>
+                  </Modal>
+                )}
+              </>
+            ),
             headerTitleAlign: "left",
             headerTitleStyle: {
               fontWeight: "bold",
@@ -73,16 +127,25 @@ export default function TabLayout() {
             // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
             headerRight: () => (
               <Pressable
-                onPress={() => handleNavigateProfile()}
+                onPress={openModal}
                 style={({ pressed }) => [
                   { marginRight: 15, opacity: pressed ? 0.5 : 1 },
                 ]}
               >
-                <FontAwesome
-                  name="user-circle-o"
-                  size={25}
-                  color={Colors[colorScheme ?? "light"].text}
-                />
+                <View
+                  style={{
+                    backgroundColor: "#fff",
+                    borderRadius: 40,
+                    padding: 7,
+                  }}
+                >
+                  <FontAwesome
+                    name="bell-o"
+                    style={{ color: "black" }}
+                    size={25}
+                    color={Colors[colorScheme ?? "light"].text}
+                  />
+                </View>
               </Pressable>
             ),
           }}
@@ -131,6 +194,17 @@ const styles = StyleSheet.create({
     width: "90%",
     elevation: 10,
   },
+
+  modalContent: {
+    backgroundColor: "#ededed",
+    paddingVertical: "20%",
+    marginTop: "30%",
+    borderRadius: 30,
+    alignItems: "center",
+    width: "100%",
+    height: "90%",
+    justifyContent: "center",
+  },
   modalOptions: {
     // backgroundColor: "yellow",
     flexDirection: "column",
@@ -146,11 +220,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   closeButton: {
-    marginTop: 20,
-    backgroundColor: "#2196F3",
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignItems: "center",
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: "#00D09E",
+    borderRadius: 5,
   },
   closeButtonText: {
     color: "#fff",

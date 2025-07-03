@@ -1,3 +1,5 @@
+import CustomTabs from "@/components/CustonTabs";
+import ExpenseSummary from "@/components/ExpenseSummary";
 import FinanceCard from "@/components/FinanceCard";
 import GoalProgressCard from "@/components/GoalProgressCard";
 import { useColorScheme } from "@/components/useColorScheme.web";
@@ -39,6 +41,11 @@ export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
   const screenHeight = Dimensions.get("window").height;
   const [animation] = useState(new Animated.Value(screenHeight));
+
+  const handleTabChange = (tab: "Daily" | "Weekly" | "Monthly") => {
+    console.log("Tab selecionada:", tab);
+    // Atualize o estado com dados diferentes se quiser
+  };
 
   const openModal = () => {
     setModalVisible(true);
@@ -96,26 +103,16 @@ export default function Home() {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: 200,
               paddingHorizontal: 1,
-              padding: 22,
-              height: "10%",
+              height: "6%",
               width: "90%",
             }}
-          >
-            <View>
-              <Text style={{ fontSize: 24 }}>Olá, bem vindo</Text>
-              <Text style={{ fontFamily: "monospace", fontSize: 17 }}>
-                Bom dia
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={{ backgroundColor: "#fff", borderRadius: 40, padding: 9 }}
-              onPress={openModal}
-            >
-              <FontAwesome name="bell-o" size={20} />
-            </TouchableOpacity>
-          </View>
+          ></View>
+          <ExpenseSummary
+            balance={7783}
+            expense={-1187.4}
+            totalBudget={20000}
+          />
           {modalVisible && (
             <Modal transparent animationType="none" visible={modalVisible}>
               <View style={styles.modalOverlay}>
@@ -152,14 +149,14 @@ export default function Home() {
           >
             <View
               style={{
-                flex: 0.2,
-                width: "83%",
+                flex: 1,
+                width: "85%",
                 marginTop: 30,
-                marginLeft: "8.5%",
-                borderRadius: 40,
+                marginLeft: "8%",
               }}
             >
               <FinanceCard />
+              <CustomTabs onTabChange={handleTabChange} />
             </View>
           </View>
         </SafeAreaView>

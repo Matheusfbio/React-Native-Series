@@ -22,6 +22,14 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
           <Text style={styles.label}>Total Balance</Text>
           <Text style={styles.balance}>${balance.toFixed(2)}</Text>
         </View>
+        <View
+          style={{
+            backgroundColor: "white",
+            width: 2,
+            marginRight: 7,
+            height: "100%",
+          }}
+        ></View>
         <View style={styles.box}>
           <Text style={styles.label}>Total Expense</Text>
           <Text style={styles.expense}>-${Math.abs(expense).toFixed(2)}</Text>

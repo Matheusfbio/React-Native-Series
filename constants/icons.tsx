@@ -6,6 +6,6 @@ export const icon = {
   orders: (props: object) => (
     <MaterialCommunityIcons name="google-analytics" size={40} {...props} />
   ),
-  category: (props: object) => <Feather name="check" size={40} {...props} />,
+  category: (props: object) => <Feather name="layers" size={40} {...props} />,
   perfil: (props: object) => <Feather name="user" size={40} {...props} />,
 };

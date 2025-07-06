@@ -113,7 +113,7 @@ export default function CustomTabs({ onTabChange }: Props) {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 20 }}
+        contentContainerStyle={{}}
         renderItem={({ item }) => (
           <View style={styles.itemRow}>
             <View style={styles.iconWrapper}>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   itemInfo: {
-    flex: 1,
+    flex: 1.1,
   },
   itemTitle: {
     fontWeight: "bold",

@@ -4,7 +4,7 @@ import FinanceCard from "@/components/FinanceCard";
 import GoalProgressCard from "@/components/GoalProgressCard";
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
-import MocksData, { mocks } from "@/constants/mocks";
+import MocksData from "@/constants/mocks";
 import { AuthContext } from "@/contexts/auth";
 import { FontAwesome } from "@expo/vector-icons";
 import {

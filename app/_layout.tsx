@@ -12,10 +12,21 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/components/useColorScheme";
 import AuthProvider from "@/contexts/auth";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
-import { Pressable, StyleSheet } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  Easing,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { NotificationProvider } from "@/utils/context/NotificationContext";
 import Tutorial from "./tutorial";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Colors from "@/constants/Colors";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -33,6 +44,9 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const screenHeight = Dimensions.get("window").height;
+  const [animation] = useState(new Animated.Value(screenHeight));
 
   const createDbIfNeeded = async (db: SQLiteDatabase) => {
     console.log("Inicializando o banco de dados...");
@@ -66,6 +80,27 @@ export default function RootLayoutNav() {
   // Primeira vez: mostra o tutorial
   if (isFirstTime) return <Tutorial />;
 
+  const openModal = () => {
+    setModalVisible(true);
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 400,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeModal = () => {
+    Animated.timing(animation, {
+      toValue: screenHeight,
+      duration: 300,
+      easing: Easing.in(Easing.ease),
+      useNativeDriver: true,
+    }).start(() => {
+      setModalVisible(false);
+    });
+  };
+
   // Já viu o tutorial: carrega as rotas normais
   return (
     <SQLiteProvider databaseName="test.db" onInit={createDbIfNeeded}>
@@ -80,6 +115,91 @@ export default function RootLayoutNav() {
               <Stack.Screen name="login" options={{ headerShown: false }} />
               <Stack.Screen name="recovery" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="food"
+                options={{
+                  title: "",
+                  headerShown: true,
+                  headerTransparent: false,
+                  headerStyle: { backgroundColor: "#00D09E" },
+                  headerTitle: () => (
+                    <>
+                      <View>
+                        <Text
+                          style={{
+                            color: "white",
+                            fontSize: 22,
+                            textAlign: "center",
+                            alignContent: "center",
+                          }}
+                        >
+                          Food
+                        </Text>
+                      </View>
+                      {modalVisible && (
+                        <Modal
+                          transparent
+                          animationType="none"
+                          visible={modalVisible}
+                        >
+                          <View style={styles.modalOverlay}>
+                            <Animated.View
+                              style={[
+                                styles.modalContent,
+                                {
+                                  transform: [{ translateY: animation }],
+                                },
+                              ]}
+                            >
+                              <Text style={styles.modalTitle}>
+                                Este é o conteúdo do modal!
+                              </Text>
+
+                              <TouchableOpacity
+                                style={styles.closeButton}
+                                onPress={closeModal}
+                              >
+                                <Text style={styles.closeButtonText}>
+                                  Fechar
+                                </Text>
+                              </TouchableOpacity>
+                            </Animated.View>
+                          </View>
+                        </Modal>
+                      )}
+                    </>
+                  ),
+                  headerTitleAlign: "left",
+                  headerTitleStyle: {
+                    fontWeight: "bold",
+                    fontSize: 20,
+                  },
+                  // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                  headerRight: () => (
+                    <Pressable
+                      onPress={openModal}
+                      style={({ pressed }) => [
+                        { marginRight: 15, opacity: pressed ? 0.5 : 1 },
+                      ]}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          borderRadius: 40,
+                          padding: 7,
+                        }}
+                      >
+                        <FontAwesome
+                          name="bell-o"
+                          style={{ color: "black" }}
+                          size={25}
+                          color={Colors[colorScheme ?? "light"].text}
+                        />
+                      </View>
+                    </Pressable>
+                  ),
+                }}
+              />
               {/* <Stack.Screen
                 name="(top-tabs)"
                 options={{ headerShown: false }}
@@ -104,5 +224,56 @@ const styles = StyleSheet.create({
     right: 32,
     top: 32,
     zIndex: 1,
+  },
+  modalOverlay: {
+    textAlign: "center",
+    alignItems: "center",
+    alignContent: "center",
+  },
+  modalContainer: {
+    // backgroundColor: "red",
+    backgroundColor: "white",
+    textAlign: "center",
+    marginTop: "145%",
+    padding: 30,
+    justifyContent: "center",
+    borderRadius: 10,
+    width: "90%",
+    elevation: 10,
+  },
+
+  modalContent: {
+    backgroundColor: "#ededed",
+    paddingVertical: "20%",
+    marginTop: "30%",
+    borderRadius: 30,
+    alignItems: "center",
+    width: "100%",
+    height: "90%",
+    justifyContent: "center",
+  },
+  modalOptions: {
+    // backgroundColor: "yellow",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  closeButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: "#00D09E",
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });

@@ -1,4 +1,5 @@
 import ExpenseList from "@/components/ExpenseList";
+import ExpenseSummary from "@/components/ExpenseSummary";
 import { router } from "expo-router";
 import {
   StyleSheet,
@@ -63,30 +64,34 @@ export default function Food() {
   ];
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#00D09E" }}>
+    <View style={styles.container}>
+      <View style={styles.info}>
+
+      <ExpenseSummary balance={7783} expense={-1187.4} totalBudget={20000} />
       <ExpenseList expensesByMonth={mockExpenses} />
-      <TouchableOpacity
+      </View>
+      {/* <TouchableOpacity
         style={styles.button}
         onPress={() => {
           router.push("./expenses");
-        }}
-      >
-        <Text style={styles.buttonText}>Add Expenses</Text>
-      </TouchableOpacity>
+          }}
+          >
+          <Text style={styles.buttonText}>Add Expenses</Text>
+      </TouchableOpacity> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#00C18C",
-    padding: 12,
-    borderRadius: 24,
-    alignItems: "center",
-    marginTop: 12,
+
+  container:{
+    backgroundColor: "#00D09E",
+    flex: 1,
   },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+  info: {
+    width: "100%",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingBottom: "2%",
   },
 });

@@ -9,6 +9,8 @@ import {
   type ToastAndroid,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { router } from "expo-router";
+import CustomTabs from "./CustonTabs";
 
 type ExpenseItem = {
   id: string;
@@ -58,6 +60,14 @@ const ExpenseList = ({ expensesByMonth }: Props) => {
           ))}
         </View>
       ))}
+            <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      router.push("./expenses");
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Add Expenses</Text>
+                  </TouchableOpacity>
     </View>
   );
 };
@@ -67,12 +77,19 @@ export default ExpenseList;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    // height: "100%",
+    height: "100%",
     // width: "100%",
-    // // marginTop: "150%",
+    // marginTop: "60%",
+    borderTopLeftRadius: 70,
+    borderTopRightRadius: 70,
+    paddingTop: 30,
+    // paddingHorizontal: 20,
+    // borderStyle: "solid",
+    backgroundColor: "#fff",
   },
   section: {
     marginBottom: 24,
+    padding: 16,
   },
   monthHeader: {
     flexDirection: "row",

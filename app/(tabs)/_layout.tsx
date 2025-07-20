@@ -235,7 +235,7 @@ export default function TabLayout() {
               </Pressable>
             ),
           }}
-        />{" "}
+        />
         <Tabs.Screen
           name="category"
           options={{

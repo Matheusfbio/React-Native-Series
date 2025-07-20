@@ -51,14 +51,24 @@ export default function Category() {
             data={categories}
             keyExtractor={(item) => item.id}
             numColumns={3}
-            columnWrapperStyle={{ justifyContent: "space-between" }}
+            columnWrapperStyle={{
+              justifyContent: "space-between",
+              marginBottom: 20,
+            }}
+            contentContainerStyle={{ paddingBottom: 40 }}
             renderItem={({ item }) => {
               const isActive = item.id === activeCategoryId;
+
               return (
                 <TouchableOpacity
                   onPress={() => {
                     setActiveCategoryId(item.id);
-                    FoodScreen();
+                    if (item.id === "1") router.push("/food");
+                    else if (item.id === "2") router.push("/transport");
+                    else if (item.id === "3") router.push("/medicine");
+                    else if (item.id === "6") router.push("/gifts");
+                    else if (item.id === "7") router.push("/savings");
+                    else if (item.id === "9") router.push("/more");
                   }}
                   style={styles.categoryItem}
                 >
@@ -70,7 +80,7 @@ export default function Category() {
                   >
                     <FontAwesome
                       name={item.icon}
-                      size={26}
+                      size={50}
                       color={isActive ? "#fff" : "#0066ff"}
                     />
                   </View>
@@ -84,106 +94,51 @@ export default function Category() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#00D09E", // fundo verde
+    backgroundColor: "#00D09E",
   },
   summary: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // height: "20%",
     marginTop: "25%",
-    marginLeft: "14%",
-    marginBottom: "-1%",
     margin: "11%",
-    // backgroundColor: "red",
-    // marginBottom: "20%",
-    // padding: 20,
-  },
-  summaryBox: {
-    alignItems: "flex-start",
-  },
-  label: {
-    color: "white",
-    marginTop: 4,
-    fontSize: 12,
-  },
-  balance: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-    marginTop: 6,
-  },
-  expense: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#62b6f7",
-    marginTop: 6,
   },
   whiteBox: {
-    marginTop: 20,
+    flex: 1,
     backgroundColor: "#e6fff3",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    // paddingHorizontal: 20,
-  },
-  progressBar: {
-    height: 10,
-    backgroundColor: "#d2f5ea",
-    borderRadius: 5,
-    width: "100%",
-    marginBottom: 4,
-  },
-  progressFill: {
-    height: "100%",
-    backgroundColor: "#00b894",
-    borderRadius: 5,
-  },
-  budgetText: {
-    alignSelf: "flex-end",
-    fontSize: 12,
-    color: "#333",
-  },
-  feedback: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#333",
+    paddingTop: 30,
+    paddingHorizontal: 20,
   },
   grid: {
-    height: "80%",
-    marginTop: 30,
-    padding: -12,
-  },
-  categoryItem: {
-    width: "30%", // 3 por linha com espaço
-    alignItems: "center",
-    justifyContent: "center",
-    aspectRatio: 1, // mantém o quadrado
-    borderRadius: 16,
     flex: 1,
   },
-
-  iconCircle: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#d5f3ff",
-    borderRadius: 20,
+  categoryItem: {
+    width: "30%",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 8,
+    // marginBottom: 28,
+    gap: 8,
   },
-
+  iconCircle: {
+    width: "100%",
+    height: "80%",
+    backgroundColor: "#BEE8FF",
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   iconCircleActive: {
     backgroundColor: "#0066ff",
   },
-
   categoryLabel: {
-    fontSize: 14,
-    color: "#333",
+    fontSize: 13,
     fontWeight: "500",
+    color: "#333",
+    textAlign: "center",
   },
 });

@@ -26,10 +26,9 @@ type ExpenseSection = {
 
 type Props = {
   expensesByMonth: ExpenseSection[];
-  onAddExpense: () => void;
 };
 
-const ExpenseList = ({ expensesByMonth, onAddExpense }: Props) => {
+const ExpenseList = ({ expensesByMonth }: Props) => {
   return (
     <View style={styles.container}>
       {expensesByMonth.map((section) => (
@@ -59,10 +58,6 @@ const ExpenseList = ({ expensesByMonth, onAddExpense }: Props) => {
           ))}
         </View>
       ))}
-
-      <TouchableOpacity style={styles.button} onPress={onAddExpense}>
-        <Text style={styles.buttonText}>Add Expenses</Text>
-      </TouchableOpacity>
     </View>
   );
 };

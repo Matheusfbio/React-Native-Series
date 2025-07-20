@@ -1,5 +1,12 @@
 import ExpenseList from "@/components/ExpenseList";
-import { ToastAndroid, View } from "react-native";
+import { router } from "expo-router";
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function Food() {
   const mockExpenses = [
@@ -57,15 +64,29 @@ export default function Food() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#00D09E" }}>
-      <ExpenseList
-        expensesByMonth={mockExpenses}
-        onAddExpense={() => {
-          ToastAndroid.show(
-            "não esta funcionando no momento",
-            ToastAndroid.SHORT
-          );
+      <ExpenseList expensesByMonth={mockExpenses} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          router.push("./expenses");
         }}
-      />
+      >
+        <Text style={styles.buttonText}>Add Expenses</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#00C18C",
+    padding: 12,
+    borderRadius: 24,
+    alignItems: "center",
+    marginTop: 12,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+});

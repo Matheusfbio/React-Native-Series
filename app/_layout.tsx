@@ -129,6 +129,8 @@ export default function RootLayoutNav() {
                           style={{
                             color: "white",
                             fontSize: 22,
+                            marginRight: "8%",
+                            // backgroundColor: "red",
                             textAlign: "center",
                             alignContent: "center",
                           }}
@@ -179,7 +181,7 @@ export default function RootLayoutNav() {
                     <Pressable
                       onPress={openModal}
                       style={({ pressed }) => [
-                        { marginRight: 15, opacity: pressed ? 0.5 : 1 },
+                        { marginRight: 2, opacity: pressed ? 0.5 : 1 },
                       ]}
                     >
                       <View
@@ -200,6 +202,93 @@ export default function RootLayoutNav() {
                   ),
                 }}
               />
+              {/* <Stack.Screen
+                name="analitics"
+                options={{
+                  title: "",
+                  headerShown: true,
+                  headerTransparent: false,
+                  headerStyle: { backgroundColor: "#00D09E" },
+                  headerTitle: () => (
+                    <>
+                      <View>
+                        <Text
+                          style={{
+                            color: "white",
+                            fontSize: 22,
+                            marginRight: "8%",
+                            // backgroundColor: "red",
+                            textAlign: "center",
+                            alignContent: "center",
+                          }}
+                        >
+                          Food
+                        </Text>
+                      </View>
+                      {modalVisible && (
+                        <Modal
+                          transparent
+                          animationType="none"
+                          visible={modalVisible}
+                        >
+                          <View style={styles.modalOverlay}>
+                            <Animated.View
+                              style={[
+                                styles.modalContent,
+                                {
+                                  transform: [{ translateY: animation }],
+                                },
+                              ]}
+                            >
+                              <Text style={styles.modalTitle}>
+                                Este é o conteúdo do modal!
+                              </Text>
+
+                              <TouchableOpacity
+                                style={styles.closeButton}
+                                onPress={closeModal}
+                              >
+                                <Text style={styles.closeButtonText}>
+                                  Fechar
+                                </Text>
+                              </TouchableOpacity>
+                            </Animated.View>
+                          </View>
+                        </Modal>
+                      )}
+                    </>
+                  ),
+                  headerTitleAlign: "left",
+                  headerTitleStyle: {
+                    fontWeight: "bold",
+                    fontSize: 20,
+                  },
+                  // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+                  headerRight: () => (
+                    <Pressable
+                      onPress={openModal}
+                      style={({ pressed }) => [
+                        { marginRight: 2, opacity: pressed ? 0.5 : 1 },
+                      ]}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          borderRadius: 40,
+                          padding: 7,
+                        }}
+                      >
+                        <FontAwesome
+                          name="bell-o"
+                          style={{ color: "black" }}
+                          size={25}
+                          color={Colors[colorScheme ?? "light"].text}
+                        />
+                      </View>
+                    </Pressable>
+                  ),
+                }}
+              /> */}
               {/* <Stack.Screen
                 name="(top-tabs)"
                 options={{ headerShown: false }}

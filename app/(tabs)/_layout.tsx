@@ -150,14 +150,92 @@ export default function TabLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="orders"
+        {/* <Tabs.Screen
+          name="analytics"
           options={{
             title: "",
             headerTitle: "Criar Orçamento",
             headerTitleAlign: "center",
           }}
-        />
+        /> */}
+        <Tabs.Screen
+          name="analytics"
+          options={{
+            headerShown: true,
+            headerTransparent: true,
+            title: "",
+            headerStyle: { backgroundColor: "#00D09E" },
+            headerTitle: () => (
+              <>
+                <View>
+                  <Text style={{ color: "white", fontSize: 22 }}>
+                    Olá, Bem Vindo
+                  </Text>
+                  <Text style={{ color: "white", fontFamily: "monospace" }}>
+                    Bom dia
+                  </Text>
+                </View>
+                {modalVisible && (
+                  <Modal
+                    transparent
+                    animationType="none"
+                    visible={modalVisible}
+                  >
+                    <View style={styles.modalOverlay}>
+                      <Animated.View
+                        style={[
+                          styles.modalContent,
+                          {
+                            transform: [{ translateY: animation }],
+                          },
+                        ]}
+                      >
+                        <Text style={styles.modalTitle}>
+                          Este é o conteúdo do modal!
+                        </Text>
+
+                        <TouchableOpacity
+                          style={styles.closeButton}
+                          onPress={closeModal}
+                        >
+                          <Text style={styles.closeButtonText}>Fechar</Text>
+                        </TouchableOpacity>
+                      </Animated.View>
+                    </View>
+                  </Modal>
+                )}
+              </>
+            ),
+            headerTitleAlign: "left",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerRight: () => (
+              <Pressable
+                onPress={openModal}
+                style={({ pressed }) => [
+                  { marginRight: 15, opacity: pressed ? 0.5 : 1 },
+                ]}
+              >
+                <View
+                  style={{
+                    backgroundColor: "#fff",
+                    borderRadius: 40,
+                    padding: 7,
+                  }}
+                >
+                  <FontAwesome
+                    name="bell-o"
+                    style={{ color: "black" }}
+                    size={25}
+                    color={Colors[colorScheme ?? "light"].text}
+                  />
+                </View>
+              </Pressable>
+            ),
+          }}
+        />{" "}
         <Tabs.Screen
           name="category"
           options={{

@@ -130,7 +130,7 @@ export default function RootLayoutNav() {
                           style={{
                             color: "white",
                             fontSize: 22,
-                            marginRight: "12%",
+                            marginRight: "14%",
                             textAlign: "center",
                             alignContent: "center",
                           }}
@@ -199,15 +199,14 @@ export default function RootLayoutNav() {
                     </Pressable>
                   ),
                 }}
-              />
-
-              {/* <Stack.Screen
-                name="analitics"
+              />   <Stack.Screen
+                name="expenses"
                 options={{
                   title: "",
                   headerShown: true,
                   headerTransparent: false,
                   headerStyle: { backgroundColor: "#00D09E" },
+                  headerTintColor: "#ffffff",
                   headerTitle: () => (
                     <>
                       <View>
@@ -215,13 +214,12 @@ export default function RootLayoutNav() {
                           style={{
                             color: "white",
                             fontSize: 22,
-                            marginRight: "8%",
-                            // backgroundColor: "red",
+                            marginRight: "14%",
                             textAlign: "center",
                             alignContent: "center",
                           }}
                         >
-                          Food
+                          Expenses
                         </Text>
                       </View>
                       {modalVisible && (
@@ -242,7 +240,6 @@ export default function RootLayoutNav() {
                               <Text style={styles.modalTitle}>
                                 Este é o conteúdo do modal!
                               </Text>
-
                               <TouchableOpacity
                                 style={styles.closeButton}
                                 onPress={closeModal}
@@ -262,7 +259,6 @@ export default function RootLayoutNav() {
                     fontWeight: "bold",
                     fontSize: 20,
                   },
-                  // tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                   headerRight: () => (
                     <Pressable
                       onPress={openModal}
@@ -281,17 +277,13 @@ export default function RootLayoutNav() {
                           name="bell-o"
                           style={{ color: "black" }}
                           size={25}
-                          color={Colors[colorScheme ?? "light"].text}
+                          color="#000"
                         />
                       </View>
                     </Pressable>
                   ),
                 }}
-              /> */}
-              {/* <Stack.Screen
-                name="(top-tabs)"
-                options={{ headerShown: false }}
-              /> */}
+              />
               <Stack.Screen
                 name="(sign-up)/sign-up"
                 options={{ headerShown: false }}

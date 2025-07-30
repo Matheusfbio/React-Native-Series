@@ -1,52 +1,76 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { BarChart } from "react-native-chart-kit";
 import ExpenseSummary from "@/components/ExpenseSummary";
+import { BarChart } from "react-native-gifted-charts";
 import CustomTabsChart from "@/components/CustonTabsChart";
+import SegmentedControl from "@react-native-segmented-control/segmented-control"
+import Colors from "@/constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const screenWidth = Dimensions.get("window").width;
 
-export default function Analysis() {
-  const [selectedTab, setSelectedTab] = useState<
-    "Daily" | "Weekly" | "Monthly" | "Year"
-  >("Daily");
+  const barData = [
+    {
+      value: 2500,
+      frontColor: "#006DFF",
+      spacing: 6,
+      label: "Seg",
+    },
+    { value: 2400, frontColor: "#3BE9DE",  },
 
-  const data = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    datasets: [
-      {
-        data: [5000, 3000, 2000, 7000, 10000, 1500, 800],
-        color: () => "#00b894",
-      },
-      {
-        data: [2000, 1000, 500, 3000, 4000, 800, 200],
-        color: () => "#0066ff",
-      },
-    ],
-  };
+    {
+      value: 3500,
+      frontColor: "#006DFF",
+      spacing: 6,
+      label: "Ter",
+    },
+    { value: 3000, frontColor: "#3BE9DE",  },
 
-  const getDateLabel = () => {
-    switch (selectedTab) {
-      case "Daily":
-        return "July 8, 2025";
-      case "Weekly":
-        return "Week 27, 2025";
-      case "Monthly":
-        return "July 2025";
-      case "Year":
-        return "Year: 2025";
-      default:
-        return "";
-    }
-  };
+    {
+      value: 4500,
+      frontColor: "#006DFF",
+      spacing: 6,
+      label: "Qua",
+    },
+    { value: 4000, frontColor: "#3BE9DE",  },
 
+    {
+      value: 5200,
+      frontColor: "#006DFF",
+      spacing: 6,
+      label: "Qui",
+    },
+    { value: 4900, frontColor: "#3BE9DE",  },
+
+    {
+      value: 3000,
+      frontColor: "#006DFF",
+      spacing: 6,
+      label: "Sex",
+    },
+    { value: 2800, frontColor: "#3BE9DE",  },
+    {
+      value: 1800,
+      frontColor: "#006DFF",
+      spacing: 6,
+      label: "Sab",
+    },
+    { value: 4800, frontColor: "#3BE9DE",  },
+    {
+      value: 1000,
+      frontColor: "#006DFF",
+      spacing: 6.1,
+      label: "Dom",
+    },
+    { value: 3800, frontColor: "#3BE9DE",  },
+  ];
+
+export default function Analytics() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [chartData, setChartData] = useState(barData);
+  
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -54,40 +78,61 @@ export default function Analysis() {
       </View>
 
       <View style={styles.whiteBox}>
-        {/* Tabs de controle */}
-        <CustomTabsChart onTabChange={setSelectedTab} />
+        {/* ÍCONES TOPO DIREITO */}
+        <View style={styles.topIcons}>
+          <FontAwesome
+            name="search"
+            size={20}
+            color="#00b894"
+            style={styles.iconButton}
+          />
+          <FontAwesome
+            name="calendar"
+            size={20}
+            color="#00b894"
+            style={styles.iconButton}
+          />
+        </View>
 
-        {/* Título da seção */}
+
         <Text style={styles.sectionTitle}>Income & Expenses</Text>
 
-        {/* Gráfico de barras */}
-        <BarChart
-          data={data}
-          width={screenWidth - 40}
-          height={220}
-          fromZero
-          showValuesOnTopOfBars
-          yAxisLabel=""
-          yAxisSuffix=""
-          chartConfig={{
-            backgroundColor: "#ffffff",
-            backgroundGradientFrom: "#ffffff",
-            backgroundGradientTo: "#ffffff",
-            decimalPlaces: 0,
-            color: () => "#333",
-            labelColor: () => "#333",
-            propsForBackgroundLines: {
-              strokeDasharray: "",
-            },
-            barPercentage: 0.5,
+        <SegmentedControl
+          values={["Diário","Semanal", "Mensal", "Anual"]}
+          selectedIndex={activeIndex}
+          onChange={(event) => {
+            setActiveIndex(event.nativeEvent.selectedSegmentIndex);
           }}
-          style={styles.chart}
+          appearance="light"
+
+          // style={{ backgroundColor:"red"}}
         />
+        <SafeAreaView style={{marginLeft: "5%", alignItems: "center" }}>
+          {chartData.length > 0 ? (
+            
+            <BarChart
+            data={barData}
+            yAxisThickness={0}
+            xAxisThickness={0}
+            stepValue={1000}
+            maxValue={6000}
+            barWidth={12}
+            noOfSections={7}
+            yAxisLabelTexts={["0", "1k", "2k", "3k", "4k", "5k", "6k"]}
+            labelWidth={40}
+            yAxisLabelWidth={22}
+            xAxisLabelTextStyle={{ color: "black", textAlign: "center", marginRight:12 }}
+            spacing={14}
+            barBorderRadius={10}
+            hideRules
+            />
+          )
+          :(
+            <View/>
+          )
+          }
+        </SafeAreaView>
 
-        {/* Data atual conforme aba */}
-        <Text style={styles.dateLabel}>{getDateLabel()}</Text>
-
-        {/* Income e Expense abaixo */}
         <View style={styles.summaryBottom}>
           <View style={styles.summaryBox}>
             <FontAwesome name="arrow-up" size={20} color="#00b894" />
@@ -123,6 +168,17 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: 20,
   },
+  topIcons: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 16,
+    marginBottom: 8,
+  },
+  iconButton: {
+    backgroundColor: "#ccf5e7",
+    padding: 8,
+    borderRadius: 10,
+  },
   sectionTitle: {
     fontWeight: "bold",
     fontSize: 18,
@@ -132,7 +188,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   chart: {
-    marginVertical: 8,
+    marginVertical: 1,
     borderRadius: 16,
     alignSelf: "center",
   },

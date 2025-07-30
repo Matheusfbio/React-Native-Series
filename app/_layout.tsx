@@ -24,7 +24,7 @@ import {
   View,
 } from "react-native";
 import { NotificationProvider } from "@/utils/context/NotificationContext";
-import Tutorial from "./tutorial";
+import Tutorial from "./(auth)/tutorial";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Colors from "@/constants/Colors";
 
@@ -108,8 +108,7 @@ export default function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <NotificationProvider>
-            <Stack>
+            <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen name="tutorial" options={{ headerShown: false }} />
               <Stack.Screen name="login" options={{ headerShown: false }} />
@@ -291,7 +290,6 @@ export default function RootLayoutNav() {
               <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
               <Stack.Screen name="cart" options={{ presentation: "modal" }} />
             </Stack>
-          </NotificationProvider>
         </ThemeProvider>
       </AuthProvider>
     </SQLiteProvider>

@@ -1,6 +1,6 @@
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
-import { AuthContext } from "@/contexts/auth";
+import { useAuth } from "@/contexts/auth";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import {
   DarkTheme,
@@ -9,7 +9,7 @@ import {
 } from "@react-navigation/native";
 import { Link, router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -28,21 +28,29 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const { register: registerUser } = useAuth();
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const nameRef = useRef("");
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!emailRef.current || !passwordRef.current) {
       Alert.alert("Preencha todos os campos!");
       return;
     }
+
+    // console.log("email: ", emailRef.current);
+    // console.log("password: ", passwordRef.current);
+    // console.log("name: ", nameRef.current);
+    
     setLoading(true); // inicia o loading
-    try {
-      await signIn(email, password); // supondo que signIn é async
+    const res = registerUser(emailRef.current, passwordRef.current, nameRef.current) // supondo que signIn é async
+    // try {
       // Se quiser, pode navegar aqui após sucesso
-    } catch (e) {
+    // } catch (e) {
       // Trate o erro se necessário
-    }
-    setLoading(false); // encerra o loading
+    // }
+    // setLoading(false); // encerra o loading
   };
 
   useEffect(() => {
@@ -133,7 +141,7 @@ export default function Login() {
                 <Text>Esqueceu a sua senha?</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => router.replace("/(sign-up)/sign-up")}
+                onPress={() => router.replace("../(auth)/register")}
                 style={styles.button}
               >
                 <Text

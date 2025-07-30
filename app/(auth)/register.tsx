@@ -1,5 +1,5 @@
 import { useColorScheme } from "@/components/useColorScheme.web";
-import { AuthContext } from "@/contexts/auth";
+import { useAuth } from "@/contexts/auth";
 import {
   DarkTheme,
   DefaultTheme,
@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -20,33 +20,46 @@ import {
   View,
 } from "react-native";
 
-export default function SignIn() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const colorScheme = useColorScheme();
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const nameRef = useRef("");
+  const { register: registerUser } = useAuth();
 
-  const authContext = useContext(AuthContext);
+  const handleSubmit = async () => {
+    const name = nameRef.current.trim();
+    const email = emailRef.current.trim();
+    const password = passwordRef.current;
 
-  const { signUp } = authContext;
-
-  const handleSubmit = () => {
     if (!name || !email || !password) {
-      Alert.alert("Todos os campos são obrigatórios!");
+      Alert.alert("Preencha todos os campos!");
       return;
     }
-    signUp(name, email, password);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Email inválido!");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const res = await registerUser(name, email, password);
+
+    setIsLoading(false);
+
+    console.log("register result ", res);
+    if (!res.sucess) {
+      Alert.alert("Sign up", res.msg);
+    }
   };
 
   useEffect(() => {
     const backAction = () => {
       router.replace("/");
-      // Alert.alert("Sair do aplicativo", "Você tem certeza que deseja sair?", [
-      //   { text: "Cancelar", style: "cancel" },
-      //   { text: "Sair", onPress: () => BackHandler.exitApp() },
-      // ]);
-      return true; // Ensure the fxunction returns a boolean
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -54,7 +67,7 @@ export default function SignIn() {
       backAction
     );
 
-    return () => backHandler.remove(); // Remove o listener ao desmontar o componente
+    return () => backHandler.remove();
   }, []);
 
   return (
@@ -77,8 +90,7 @@ export default function SignIn() {
             </Text>
             <TextInput
               placeholder="João da Silva"
-              onChangeText={setName}
-              value={name}
+              onChangeText={(value) => (nameRef.current = value)}
               style={styles.input}
             />
             <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 28 }}>
@@ -86,17 +98,17 @@ export default function SignIn() {
             </Text>
             <TextInput
               placeholder="exemplo@email.com"
-              onChangeText={setEmail}
-              value={email}
+              onChangeText={(value) => (emailRef.current = value)}
               style={styles.input}
+              autoCapitalize="none"
+              keyboardType="email-address"
             />
             <Text style={{ fontSize: 16, fontWeight: "400", marginLeft: 28 }}>
               Senha
             </Text>
             <TextInput
               placeholder="********"
-              onChangeText={setPassword}
-              value={password}
+              onChangeText={(value) => (passwordRef.current = value)}
               style={styles.input}
               secureTextEntry
             />
@@ -171,7 +183,6 @@ const styles = StyleSheet.create({
   },
   emailAndPasswordField: {
     marginHorizontal: 15,
-    // backgroundColor: "red",
     textAlign: "left",
   },
 });

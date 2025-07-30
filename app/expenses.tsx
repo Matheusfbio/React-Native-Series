@@ -15,7 +15,7 @@ export default function Expense() {
   const [date, setDate] = useState(new Date("2024-04-30"));
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState("$26,00");
+  const [amount, setAmount] = useState("R$");
   const [title, setTitle] = useState("Dinner");
   const [message, setMessage] = useState("");
 
@@ -74,9 +74,10 @@ export default function Expense() {
         <Text style={styles.label}>Amount</Text>
         <TextInput
           value={amount}
+          placeholder={"Ex: R$40"}
           onChangeText={setAmount}
           style={styles.input}
-          keyboardType="numeric"
+          keyboardType="ascii-capable"
         />
 
         {/* Expense Title */}

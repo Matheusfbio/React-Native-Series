@@ -25,7 +25,7 @@ const slides = [
     id: "1",
     title: "Bem-vindo!",
     description: "Este é o nosso app incrível!",
-    image: require("../assets/images/icon.png"),
+    image: require("../../assets/images/icon.png"),
   },
   {
     id: "2",

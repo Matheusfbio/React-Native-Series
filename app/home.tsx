@@ -76,7 +76,7 @@ export default function Login() {
               <Text>Entrar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => router.replace("/(sign-up)/sign-up")}
+              onPress={() => router.replace("/app/(auth)/register")}
               style={styles.button}
             >
               <Text>Criar conta</Text>

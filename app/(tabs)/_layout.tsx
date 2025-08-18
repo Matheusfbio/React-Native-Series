@@ -18,8 +18,8 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { StatusBar } from "expo-status-bar";
-import { AuthContext } from "@/contexts/auth";
 import { TabBar } from "@/components/TabBar";
+import { useAuth } from "@/contexts/auth";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -29,7 +29,7 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
   const screenHeight = Dimensions.get("window").height;

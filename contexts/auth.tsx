@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import React, { createContext, useState, useEffect } from "react";
 import { ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -26,10 +26,22 @@ import type { AuthContextType, UserType } from "@/constants/types/types";
 
 export default function AuthProvider({ children }: any){
   const [user, setUser] = useState<UserType | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth,(firebaseUser) => {
-      console.log("firebase user: ", firebaseUser);
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser.uid,
+          name: firebaseUser.displayName,
+          email: firebaseUser.email,
+          image: firebaseUser.photoURL,
+        })
+        router.replace("/(tabs)")
+      }else{
+        setUser(null)
+        router.replace("/")
+      }
     })
   }, []);
 
@@ -105,6 +117,9 @@ export default function AuthProvider({ children }: any){
       return{sucess: true}
     } catch (error: any) {
       let msg = error.message;
+      console.log("error message", msg);
+      if (msg.includes("(auth/invalid-credential)")) msg = "Email ou senha são invalidas" 
+      if (msg.includes("(auth/invalid-email)")) msg = "Email invalidas" 
       return{sucess: false, msg}
     }
   }
@@ -163,6 +178,9 @@ export default function AuthProvider({ children }: any){
       return {sucess: true}
     } catch (error: any) {
       let msg = error.message;
+      console.log("error message", msg);
+      if (msg.includes("(auth/email=already-in-use)")) msg = "Esse email esta sendo usado" 
+      if (msg.includes("(auth/invalid-email)")) msg = "Email invalida" 
       return{sucess: false, msg}
     }
   }

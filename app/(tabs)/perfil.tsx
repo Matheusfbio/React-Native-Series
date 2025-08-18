@@ -9,21 +9,22 @@ import {
 import { Text, View } from "@/components/Themed";
 import { router } from "expo-router";
 import { useContext } from "react";
-import { AuthContext } from "@/contexts/auth";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useColorScheme } from "@/components/useColorScheme.web";
+import { useAuth } from "@/contexts/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebaseconfig";
 
 export default function Perfil() {
-  const { user } = useContext(AuthContext);
-  const { signOut } = useContext(AuthContext);
+  const { user } = useAuth();
   const colorScheme = useColorScheme();
   const handleSignOut = async () => {
     try {
-      await signOut();
+      await signOut(auth);
       router.replace("../login");
     } catch (error) {
       console.error("Erro ao sair:", error);
@@ -33,14 +34,14 @@ export default function Perfil() {
   };
   return (
     <View style={styles.container}>
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Text style={styles.title}>{user?.name}</Text>
+        <Text style={styles.title}>{user?.image}</Text>
         <Text style={styles.title}>{user?.email}</Text>
-        <Text style={styles.title}>{user?.status}</Text>
+        <Text style={styles.title}>{user?.name}</Text>
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text>Sair</Text>
         </TouchableOpacity>
-        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
       </ThemeProvider>
     </View>
   );

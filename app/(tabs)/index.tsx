@@ -5,7 +5,7 @@ import GoalProgressCard from "@/components/GoalProgressCard";
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
 import MocksData from "@/constants/mocks";
-import { AuthContext } from "@/contexts/auth";
+import {  useAuth } from "@/contexts/auth";
 import { FontAwesome } from "@expo/vector-icons";
 import {
   DarkTheme,
@@ -37,7 +37,7 @@ export default function Home() {
   const colorScheme = useColorScheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { signIn } = useContext(AuthContext);
+  const { login } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
   const screenHeight = Dimensions.get("window").height;
   const [animation] = useState(new Animated.Value(screenHeight));
@@ -73,7 +73,7 @@ export default function Home() {
       Alert.alert("Preencha todos os campos!");
       return;
     }
-    signIn(email, password);
+    login(email, password);
   };
 
   useEffect(() => {

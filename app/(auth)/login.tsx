@@ -7,7 +7,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { Link, router } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -25,13 +25,11 @@ import {
 
 export default function Login() {
   const colorScheme = useColorScheme();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const { register: registerUser } = useAuth();
+  const { login: loginUser } = useAuth();
   const emailRef = useRef("");
   const passwordRef = useRef("");
-  const nameRef = useRef("");
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) {
@@ -39,18 +37,17 @@ export default function Login() {
       return;
     }
 
-    // console.log("email: ", emailRef.current);
-    // console.log("password: ", passwordRef.current);
-    // console.log("name: ", nameRef.current);
-    
     setLoading(true); // inicia o loading
-    const res = registerUser(emailRef.current, passwordRef.current, nameRef.current) // supondo que signIn é async
-    // try {
+    const res = await loginUser(emailRef.current, passwordRef.current); // supondo que signIn é async
+    setLoading(false); // encerra o loading
+    if (!res.sucess) {
+        Alert.alert("Login", res.msg);      
+    }
+     // try {
       // Se quiser, pode navegar aqui após sucesso
     // } catch (e) {
       // Trate o erro se necessário
     // }
-    // setLoading(false); // encerra o loading
   };
 
   useEffect(() => {
@@ -91,8 +88,7 @@ export default function Login() {
               </Text>
               <TextInput
                 placeholder="example@example.com"
-                onChangeText={setEmail}
-                value={email}
+                onChangeText={(value) => (emailRef.current = value)}
                 style={{
                   borderColor: "#d3d3d3",
                   backgroundColor: "#d3d3d3",
@@ -109,8 +105,7 @@ export default function Login() {
               </Text>
               <TextInput
                 placeholder="********"
-                onChangeText={setPassword}
-                value={password}
+                onChangeText={(value) => (passwordRef.current = value)}
                 style={styles.input}
                 secureTextEntry
               />

@@ -5,7 +5,10 @@ import GoalProgressCard from "@/components/GoalProgressCard";
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
 import MocksData from "@/constants/mocks";
-import {  useAuth } from "@/contexts/auth";
+import { useAuth } from "@/contexts/auth";
+import TestNotification from "@/components/TestNotification";
+import SimpleTest from "@/components/SimpleTest";
+import SimpleNotificationTest from "@/components/SimpleNotificationTest";
 import { FontAwesome } from "@expo/vector-icons";
 import {
   DarkTheme,
@@ -155,6 +158,9 @@ export default function Home() {
                 marginLeft: "8%",
               }}
             >
+              <SimpleTest />
+              <SimpleNotificationTest />
+              {/* <TestNotification /> */}
               <FinanceCard />
               <CustomTabs onTabChange={handleTabChange} />
             </View>

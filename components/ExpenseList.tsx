@@ -60,14 +60,14 @@ const ExpenseList = ({ expensesByMonth }: Props) => {
           ))}
         </View>
       ))}
-            <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      router.push("./expenses");
-                    }}
-                  >
-                    <Text style={styles.buttonText}>Add Expenses</Text>
-                  </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          router.push("./expenses");
+        }}
+      >
+        <Text style={styles.buttonText}>Add Expenses</Text>
+      </TouchableOpacity>
     </View>
   );
 };

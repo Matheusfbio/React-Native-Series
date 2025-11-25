@@ -35,7 +35,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "tutorial",
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -110,185 +110,24 @@ export default function RootLayoutNav() {
         >
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="tutorial" options={{ headerShown: false }} />
-              <Stack.Screen name="login" options={{ headerShown: false }} />
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="recovery" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="food"
-                options={{
-                  title: "",
-                  headerShown: true,
-                  headerTransparent: false,
-                  headerStyle: { backgroundColor: "#00D09E" },
-                  headerTintColor: "#ffffff",
-                  headerTitle: () => (
-                    <>
-                      <View>
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: 22,
-                            marginRight: "14%",
-                            textAlign: "center",
-                            alignContent: "center",
-                          }}
-                        >
-                          Food
-                        </Text>
-                      </View>
-                      {modalVisible && (
-                        <Modal
-                          transparent
-                          animationType="none"
-                          visible={modalVisible}
-                        >
-                          <View style={styles.modalOverlay}>
-                            <Animated.View
-                              style={[
-                                styles.modalContent,
-                                {
-                                  transform: [{ translateY: animation }],
-                                },
-                              ]}
-                            >
-                              <Text style={styles.modalTitle}>
-                                Este é o conteúdo do modal!
-                              </Text>
-                              <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={closeModal}
-                              >
-                                <Text style={styles.closeButtonText}>
-                                  Fechar
-                                </Text>
-                              </TouchableOpacity>
-                            </Animated.View>
-                          </View>
-                        </Modal>
-                      )}
-                    </>
-                  ),
-                  headerTitleAlign: "left",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                    fontSize: 20,
-                  },
-                  headerRight: () => (
-                    <Pressable
-                      onPress={openModal}
-                      style={({ pressed }) => [
-                        { marginRight: 2, opacity: pressed ? 0.5 : 1 },
-                      ]}
-                    >
-                      <View
-                        style={{
-                          backgroundColor: "#fff",
-                          borderRadius: 40,
-                          padding: 7,
-                        }}
-                      >
-                        <FontAwesome
-                          name="bell-o"
-                          style={{ color: "black" }}
-                          size={25}
-                          color="#000"
-                        />
-                      </View>
-                    </Pressable>
-                  ),
-                }}
-              />   <Stack.Screen
-                name="expenses"
-                options={{
-                  title: "",
-                  headerShown: true,
-                  headerTransparent: false,
-                  headerStyle: { backgroundColor: "#00D09E" },
-                  headerTintColor: "#ffffff",
-                  headerTitle: () => (
-                    <>
-                      <View>
-                        <Text
-                          style={{
-                            color: "white",
-                            fontSize: 22,
-                            marginRight: "14%",
-                            textAlign: "center",
-                            alignContent: "center",
-                          }}
-                        >
-                          Expenses
-                        </Text>
-                      </View>
-                      {modalVisible && (
-                        <Modal
-                          transparent
-                          animationType="none"
-                          visible={modalVisible}
-                        >
-                          <View style={styles.modalOverlay}>
-                            <Animated.View
-                              style={[
-                                styles.modalContent,
-                                {
-                                  transform: [{ translateY: animation }],
-                                },
-                              ]}
-                            >
-                              <Text style={styles.modalTitle}>
-                                Este é o conteúdo do modal!
-                              </Text>
-                              <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={closeModal}
-                              >
-                                <Text style={styles.closeButtonText}>
-                                  Fechar
-                                </Text>
-                              </TouchableOpacity>
-                            </Animated.View>
-                          </View>
-                        </Modal>
-                      )}
-                    </>
-                  ),
-                  headerTitleAlign: "left",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                    fontSize: 20,
-                  },
-                  headerRight: () => (
-                    <Pressable
-                      onPress={openModal}
-                      style={({ pressed }) => [
-                        { marginRight: 2, opacity: pressed ? 0.5 : 1 },
-                      ]}
-                    >
-                      <View
-                        style={{
-                          backgroundColor: "#fff",
-                          borderRadius: 40,
-                          padding: 7,
-                        }}
-                      >
-                        <FontAwesome
-                          name="bell-o"
-                          style={{ color: "black" }}
-                          size={25}
-                          color="#000"
-                        />
-                      </View>
-                    </Pressable>
-                  ),
-                }}
-              />
-              <Stack.Screen
-                name="(sign-up)/sign-up"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="perfil" options={{ presentation: "modal" }} />
+
               <Stack.Screen name="cart" options={{ presentation: "modal" }} />
+              <Stack.Screen name="expenses" options={{
+                title: "Expenses",
+                headerShown: true,
+                headerStyle: { backgroundColor: "#00D09E" },
+                headerTintColor: "#ffffff"
+              }} />
+              <Stack.Screen name="food" options={{
+                title: "Food",
+                headerShown: true,
+                headerStyle: { backgroundColor: "#00D09E" },
+                headerTintColor: "#ffffff"
+              }} />
+              <Stack.Screen name="home" options={{ headerShown: false }} />
             </Stack>
         </ThemeProvider>
       </AuthProvider>

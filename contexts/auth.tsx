@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { auth, firestore } from "@/firebaseconfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import type { AuthContextType, UserType } from "@/constants/types/types";
+import { useNotifications } from "@/hooks/useNotifications";
 
 // interface AuthUser {
 //   email: string;
@@ -27,22 +28,18 @@ import type { AuthContextType, UserType } from "@/constants/types/types";
 export default function AuthProvider({ children }: any){
   const [user, setUser] = useState<UserType | null>(null);
   const router = useRouter();
+  const { expoPushToken } = useNotifications(user?.uid);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth,(firebaseUser) => {
+    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          name: firebaseUser.displayName,
-          email: firebaseUser.email,
-          image: firebaseUser.photoURL,
-        })
-        router.replace("/(tabs)")
-      }else{
-        setUser(null)
-        router.replace("/")
+        await updateUserData(firebaseUser.uid);
+        router.replace("/(tabs)");
+      } else {
+        setUser(null);
+        router.replace("/");
       }
-    })
+    });
   }, []);
 
   // useEffect(() => {
@@ -185,7 +182,7 @@ export default function AuthProvider({ children }: any){
     }
   }
 
-  const updateUserData = async (uid: string)  => {
+  const updateUserData = async (uid: string): Promise<void> => {
     try {
       const docRef = doc(firestore, "users", uid);
       const docSnap = await getDoc(docRef);
@@ -194,17 +191,16 @@ export default function AuthProvider({ children }: any){
         const data = docSnap.data();
         const userData: UserType = {
           uid: data?.uid,
-          email: data.email|| null,
+          email: data.email || null,
           name: data.name || null,
-          image: data.image|| null,
+          image: data.image || null,
         };
-        setUser({...userData});
+        setUser(userData);
       }
-    } catch (error:any) {
-      let msg = error.message;
-      return{sucess: false, msg}
+    } catch (error: any) {
+      console.error("Erro ao buscar dados do usuário:", error.message);
     }
-  }
+  };
 
   // async function signOut() {
   //   try {

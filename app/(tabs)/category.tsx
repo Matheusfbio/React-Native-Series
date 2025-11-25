@@ -23,19 +23,18 @@ export default function Category() {
   const FoodScreen = () => {
     router.push("../food");
   };
-  
-const [categoriesList, setCategoriesList] = useState([
-  { id: "1", name: "Food", icon: "cutlery" },
-  { id: "2", name: "Transport", icon: "bus" },
-  { id: "3", name: "Medicine", icon: "medkit" },
-  { id: "4", name: "Groceries", icon: "shopping-basket" },
-  { id: "5", name: "Rent", icon: "key" },
-  { id: "6", name: "Gifts", icon: "gift" },
-  { id: "7", name: "Savings", icon: "bank" },
-  { id: "8", name: "Entertainment", icon: "ticket" },
-  { id: "9", name: "More", icon: "plus" },
-]);
 
+  const [categoriesList, setCategoriesList] = useState([
+    { id: "1", name: "Food", icon: "cutlery" },
+    { id: "2", name: "Transport", icon: "bus" },
+    { id: "3", name: "Medicine", icon: "medkit" },
+    { id: "4", name: "Groceries", icon: "shopping-basket" },
+    { id: "5", name: "Rent", icon: "key" },
+    { id: "6", name: "Gifts", icon: "gift" },
+    { id: "7", name: "Savings", icon: "bank" },
+    { id: "8", name: "Entertainment", icon: "ticket" },
+    { id: "9", name: "More", icon: "plus" },
+  ]);
 
   const addCategory = () => {
     const newCategory = {
@@ -46,7 +45,6 @@ const [categoriesList, setCategoriesList] = useState([
 
     setCategoriesList((prev) => [...prev, newCategory]);
   };
-
 
   return (
     <View style={styles.container}>

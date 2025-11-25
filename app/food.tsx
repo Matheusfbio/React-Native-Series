@@ -66,9 +66,8 @@ export default function Food() {
   return (
     <View style={styles.container}>
       <View style={styles.info}>
-
-      <ExpenseSummary balance={7783} expense={-1187.4} totalBudget={20000} />
-      <ExpenseList expensesByMonth={mockExpenses} />
+        <ExpenseSummary balance={7783} expense={-1187.4} totalBudget={20000} />
+        <ExpenseList expensesByMonth={mockExpenses} />
       </View>
       {/* <TouchableOpacity
         style={styles.button}
@@ -83,8 +82,7 @@ export default function Food() {
 }
 
 const styles = StyleSheet.create({
-
-  container:{
+  container: {
     backgroundColor: "#00D09E",
     flex: 1,
   },

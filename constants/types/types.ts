@@ -22,6 +22,7 @@ export type ImageUploadProps = {
 export type AuthContextType = {
   user: UserType;
   setUser: Function;
+  loading: boolean;
   login: (
     email: string,
     password: string,
@@ -31,7 +32,8 @@ export type AuthContextType = {
     email: string,
     password: string,
   ) => Promise<{sucess: boolean; msg?: string}>;
-  updateUserData: (userId: string) => Promise<void>
+  updateUserData: (userId: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 export type ResponseType = {

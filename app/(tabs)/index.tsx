@@ -5,7 +5,7 @@ import GoalProgressCard from "@/components/GoalProgressCard";
 import { useColorScheme } from "@/components/useColorScheme.web";
 import type Colors from "@/constants/Colors";
 import MocksData from "@/constants/mocks";
-import {  useAuth } from "@/contexts/auth";
+import { useAuth } from "@/contexts/auth";
 import { FontAwesome } from "@expo/vector-icons";
 import {
   DarkTheme,

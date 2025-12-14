@@ -1,6 +1,4 @@
 import { useColorScheme } from "@/components/useColorScheme.web";
-import type Colors from "@/constants/Colors";
-import { AuthContext } from "@/contexts/auth";
 import {
   DarkTheme,
   DefaultTheme,
@@ -27,7 +25,6 @@ export default function Recovery() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const { signIn } = useContext(AuthContext);
 
   const handleLogin = async () => {
     if (!email || !password) {

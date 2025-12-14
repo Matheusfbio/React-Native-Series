@@ -37,17 +37,15 @@ export default function Login() {
       return;
     }
 
-    setLoading(true); // inicia o loading
-    const res = await loginUser(emailRef.current, passwordRef.current); // supondo que signIn é async
-    setLoading(false); // encerra o loading
+    setLoading(true);
+    const res = await loginUser(emailRef.current, passwordRef.current);
+    setLoading(false);
+    
     if (!res.sucess) {
-        Alert.alert("Login", res.msg);      
+      Alert.alert("Login", res.msg);
+    } else {
+      router.replace("/(tabs)");
     }
-     // try {
-      // Se quiser, pode navegar aqui após sucesso
-    // } catch (e) {
-      // Trate o erro se necessário
-    // }
   };
 
   useEffect(() => {
@@ -125,7 +123,7 @@ export default function Login() {
 
               <TouchableOpacity
                 style={{ marginTop: 1, padding: 12 }}
-                onPress={() => router.replace("/recovery")}
+                onPress={() => router.replace("../recovery")}
                 // onPress={() =>
                 //   ToastAndroid.show(
                 //     "Funcionalidade em breve",
@@ -167,7 +165,7 @@ export default function Login() {
             >
               <Text>Nâo tem conta, </Text>
               <TouchableOpacity
-                onPress={() => router.replace("/(sign-up)/sign-up")}
+                onPress={() => router.replace("../(auth)/register")}
               >
                 <Text>crie agora</Text>
               </TouchableOpacity>

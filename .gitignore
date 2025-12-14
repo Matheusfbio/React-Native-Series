@@ -34,3 +34,11 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Arquivos de configuração sensíveis
+firebaseconfig.ts
+*.secret.*
+*.key.*
+*.env
+*.env.*
+*.json

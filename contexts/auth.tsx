@@ -1,107 +1,122 @@
-import { router } from "expo-router";
-import { createContext, useState, useEffect } from "react";
-import { Alert } from "react-native";
+import { router, useRouter } from "expo-router";
+import React, { createContext, useState, useEffect } from "react";
+import { ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { auth, firestore } from "@/firebaseconfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import type { AuthContextType, UserType } from "@/constants/types/types";
 
-interface AuthUser {
-  email: string;
-  name: string;
-  status: string;
-  password: string;
-}
-
-interface AuthContextType {
-  user: AuthUser | null;
-  signUp: (name: string, email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-}
-
-export const AuthContext = createContext<AuthContextType>(
-  {} as AuthContextType
-);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    loadUser();
+    const unsub = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        updateUserData(firebaseUser.uid).finally(() => setLoading(false));
+      } else {
+        setUser(null);
+        setLoading(false);
+      }
+    });
+
+    return () => unsub();
   }, []);
 
-  async function loadUser() {
+  async function login(email: string, password: string) {
     try {
-      const storedUser = await AsyncStorage.getItem(
-        "@react-native-learn:AuthUser"
+      await signInWithEmailAndPassword(auth, email, password);
+      return { sucess: true };
+    } catch (error: any) {
+      let msg = error.message;
+      console.log("error message", msg);
+      if (msg.includes("(auth/invalid-credential)"))
+        msg = "Email ou senha são invalidas";
+      if (msg.includes("(auth/invalid-email)")) msg = "Email invalidas";
+      return { sucess: false, msg };
+    }
+  }
+
+  async function register(name: string, email: string, password: string) {
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
       );
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+      await setDoc(doc(firestore, "users", response.user?.uid), {
+        name,
+        email,
+        uid: response?.user?.uid,
+      });
+      return { sucess: true };
+    } catch (error: any) {
+      let msg = error.message;
+      console.log("error message", msg);
+      if (msg.includes("(auth/email=already-in-use)"))
+        msg = "Esse email esta sendo usado";
+      if (msg.includes("(auth/invalid-email)")) msg = "Email invalida";
+      return { sucess: false, msg };
+    }
+  }
+
+  const updateUserData = async (uid: string) => {
+    try {
+      const docRef = doc(firestore, "users", uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const userData: UserType = {
+          uid: data?.uid,
+          email: data.email || null,
+          name: data.name || null,
+          image: data.image || null,
+        };
+        setUser({ ...userData });
       }
-    } catch (error) {
-      console.error("Erro ao carregar usuário do armazenamento local", error);
+    } catch (error: any) {
+      let msg = error.message;
+      return { sucess: false, msg };
     }
-  }
+  };
 
-  async function signIn(email: string, password: string) {
+  async function logout() {
     try {
-      const storedUser = await AsyncStorage.getItem(
-        "@react-native-learn:AuthUser"
-      );
-      if (storedUser) {
-        const parsedUser: AuthUser = JSON.parse(storedUser);
-        if (parsedUser.email === email && parsedUser.password === password) {
-          setUser(parsedUser);
-
-          // Salva o usuário autenticado no AsyncStorage
-          await AsyncStorage.setItem(
-            "@react-native-learn:AuthUser",
-            JSON.stringify(parsedUser)
-          );
-
-          Alert.alert(`Bem-vindo, ${parsedUser.name}!`);
-          router.replace("/(tabs)");
-          return;
-        }
-      }
-      Alert.alert("Credenciais inválidas!");
-    } catch (error) {
-      console.error("Erro ao fazer login", error);
-    }
-  }
-
-  async function signUp(name: string, email: string, password: string) {
-    if (!name || !email || !password) {
-      Alert.alert("Todos os campos são obrigatórios!");
-      return;
-    }
-
-    const newUser: AuthUser = { name, email, status: "Ativo", password };
-
-    try {
-      await AsyncStorage.setItem(
-        "@react-native-learn:AuthUser",
-        JSON.stringify(newUser)
-      );
-      setUser(newUser);
-      Alert.alert("Cadastro realizado com sucesso!");
-      router.replace("/"); // Redireciona para login
-    } catch (error) {
-      console.error("Erro ao salvar usuário", error);
-    }
-  }
-
-  async function signOut() {
-    try {
-      await AsyncStorage.removeItem("@react-native-learn:AuthUser");
-      setUser(null);
-      router.replace("/");
+      await signOut(auth);
     } catch (error) {
       console.error("Erro ao sair", error);
     }
   }
 
+  const contextValue: AuthContextType = {
+    user,
+    setUser,
+    loading,
+    register,
+    login,
+    updateUserData: updateUserData as (userId: string) => Promise<void>,
+    signOut: logout,
+  };
+
   return (
-    <AuthContext.Provider value={{ signUp, signIn, signOut, user }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 }
+
+export const useAuth = (): AuthContextType => {
+  const context = React.useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within a AuthProvider");
+  }
+  return context;
+};

@@ -1,5 +1,9 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import SavingModal from "./SavingModal";
+import { ref, onValue } from "firebase/database";
+import { db } from "@/firebaseconfig";
+import { useAuth } from "@/contexts/auth";
 
 interface ExpenseSummaryProps {
   balance: number;
@@ -12,7 +16,29 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
   expense,
   totalBudget,
 }) => {
-  const percentage = Math.min(Math.abs(expense) / totalBudget, 1);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [savedBudget, setSavedBudget] = useState(totalBudget);
+  const [savedBalance, setSavedBalance] = useState(balance);
+  const [savedExpense, setSavedExpense] = useState(expense);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const budgetRef = ref(db, `budget/${user.uid}`);
+    const unsubscribe = onValue(budgetRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setSavedBudget(data.totalBudget || totalBudget);
+        setSavedBalance(data.balance || balance);
+        setSavedExpense(data.expense || expense);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [user?.uid]);
+
+  const percentage = Math.min(Math.abs(savedExpense) / savedBudget, 1);
 
   return (
     <View style={styles.container}>
@@ -20,7 +46,7 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
       <View style={styles.header}>
         <View style={styles.box}>
           <Text style={styles.label}>Total Balance</Text>
-          <Text style={styles.balance}>${balance.toFixed(2)}</Text>
+          <Text style={styles.balance}>${savedBalance.toFixed(2)}</Text>
         </View>
         <View
           style={{
@@ -32,27 +58,33 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
         ></View>
         <View style={styles.box}>
           <Text style={styles.label}>Total Expense</Text>
-          <Text style={styles.expense}>-${Math.abs(expense).toFixed(2)}</Text>
+          <Text style={styles.expense}>-${Math.abs(savedExpense).toFixed(2)}</Text>
         </View>
       </View>
-
       {/* Barra de Progresso */}
-      <View style={styles.progressContainer}>
-        <Text style={styles.percentageLabel}>
-          {Math.round(percentage * 100)}%
-        </Text>
-        <View style={styles.progressBarBackground}>
-          <View
-            style={[styles.progressBarFill, { width: `${percentage * 100}%` }]}
-          />
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <View style={styles.progressContainer}>
+          <Text style={styles.percentageLabel}>
+            {Math.round(percentage * 100)}%
+          </Text>
+          <View style={styles.progressBarBackground}>
+            <View
+              style={[
+                styles.progressBarFill,
+                { width: `${percentage * 100}%` },
+              ]}
+            />
+          </View>
+          <Text style={styles.totalLabel}>${savedBudget.toFixed(2)}</Text>
         </View>
-        <Text style={styles.totalLabel}>${totalBudget.toFixed(2)}</Text>
-      </View>
+      </TouchableOpacity>
 
       {/* Mensagem */}
       <Text style={styles.message}>
         ✅ {Math.round(percentage * 100)}% of your expenses, looks good.
       </Text>
+
+      <SavingModal visible={modalVisible} onClose={() => setModalVisible(false)} />
     </View>
   );
 };

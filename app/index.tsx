@@ -2,25 +2,31 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
+import { useAuth } from "@/contexts/auth";
 
 export default function Index() {
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkTutorial = async () => {
-      const hasSeen = await AsyncStorage.getItem("hasSeenTutorial");
+    const checkAuth = async () => {
+      if (authLoading) return;
 
-      if (hasSeen === "true") {
-        router.replace("/login");
+      if (user) {
+        router.replace("/(tabs)");
       } else {
-        router.replace("/tutorial"); // 👈 redireciona para o tutorial
+        const hasSeen = await AsyncStorage.getItem("hasSeenTutorial");
+        if (hasSeen === "true") {
+          router.replace("/(auth)/login");
+        } else {
+          router.replace("/(auth)/tutorial");
+        }
       }
-
       setLoading(false);
     };
 
-    checkTutorial();
-  }, []);
+    checkAuth();
+  }, [user, authLoading]);
 
   if (loading) {
     return (

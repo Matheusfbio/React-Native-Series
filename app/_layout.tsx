@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
-import AuthProvider from "@/contexts/auth";
+import AuthProvider, { useAuth } from "@/contexts/auth";
 import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
 import {
   Animated,
@@ -41,44 +41,11 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayoutNav() {
+function RootLayout() {
   const colorScheme = useColorScheme();
-  const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const screenHeight = Dimensions.get("window").height;
   const [animation] = useState(new Animated.Value(screenHeight));
-
-  const createDbIfNeeded = async (db: SQLiteDatabase) => {
-    console.log("Inicializando o banco de dados...");
-    try {
-      await db.execAsync(
-        `CREATE TABLE IF NOT EXISTS users (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          email TEXT NOT NULL
-        );`
-      );
-      await db.execAsync("ALTER TABLE users ADD COLUMN image TEXT");
-    } catch (err) {
-      if (!`${err}`.includes("duplicate column")) {
-        console.error("Erro ao inicializar o banco de dados:", err);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const checkFirstTime = async () => {
-      const seen = await AsyncStorage.getItem("hasSeenTutorial");
-      setIsFirstTime(seen === null);
-    };
-    checkFirstTime();
-  }, []);
-
-  // Ainda carregando
-  if (isFirstTime === null) return null;
-
-  // Primeira vez: mostra o tutorial
-  if (isFirstTime) return <Tutorial />;
 
   const openModal = () => {
     setModalVisible(true);
@@ -101,13 +68,8 @@ export default function RootLayoutNav() {
     });
   };
 
-  // Já viu o tutorial: carrega as rotas normais
   return (
-    <SQLiteProvider databaseName="test.db" onInit={createDbIfNeeded}>
-      <AuthProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
           {modalVisible && (
             <Modal transparent animationType="none" visible={modalVisible}>
               <View style={styles.modalOverlay}>
@@ -218,7 +180,30 @@ export default function RootLayoutNav() {
 
               <Stack.Screen name="cart" options={{ presentation: "modal" }} />
           </Stack>
-        </ThemeProvider>
+    </ThemeProvider>
+  );
+}
+
+export default function RootLayoutNav() {
+  return (
+    <SQLiteProvider databaseName="test.db" onInit={async (db) => {
+      try {
+        await db.execAsync(
+          `CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL
+          );`
+        );
+        await db.execAsync("ALTER TABLE users ADD COLUMN image TEXT");
+      } catch (err) {
+        if (!`${err}`.includes("duplicate column")) {
+          console.error("Erro ao inicializar o banco de dados:", err);
+        }
+      }
+    }}>
+      <AuthProvider>
+        <RootLayout />
       </AuthProvider>
     </SQLiteProvider>
   );

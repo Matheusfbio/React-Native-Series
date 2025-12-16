@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import SavingModal from "./SavingModal";
 import { ref, onValue } from "firebase/database";
 import { db } from "@/firebaseconfig";
 import { useAuth } from "@/contexts/auth";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 interface ExpenseSummaryProps {
   balance: number;
@@ -20,7 +29,21 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
   const [savedBudget, setSavedBudget] = useState(totalBudget);
   const [savedBalance, setSavedBalance] = useState(balance);
   const [savedExpense, setSavedExpense] = useState(expense);
+  const [notificationId, setNotificationId] = useState<string | null>(null);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const requestPermissions = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissão necessária",
+          "Ative as notificações para receber alertas."
+        );
+      }
+    };
+    requestPermissions();
+  }, []);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -40,12 +63,44 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
 
   const percentage = Math.min(Math.abs(savedExpense) / savedBudget, 1);
 
+  useEffect(() => {
+    const manageNotification = async () => {
+      if (notificationId) {
+        await Notifications.cancelScheduledNotificationAsync(notificationId);
+      }
+
+      if (percentage >= 0.8) {
+        const id = await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "⚠️ Atenção!",
+            body: `Suas despesas estão em ${Math.round(
+              percentage * 100
+            )}% do orçamento. Reduza seus gastos.`,
+            sound: true,
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+            seconds: 1800,
+            repeats: true,
+          },
+        });
+        setNotificationId(id);
+      }
+    };
+    manageNotification();
+
+    return () => {
+      if (notificationId) {
+        Notifications.cancelScheduledNotificationAsync(notificationId);
+      }
+    };
+  }, [percentage]);
+
   return (
     <View style={styles.container}>
-      {/* Header com saldo e gasto */}
       <View style={styles.header}>
         <View style={styles.box}>
-          <Text style={styles.label}>Total Balance</Text>
+          <Text style={styles.label}>Saldo total</Text>
           <Text style={styles.balance}>${savedBalance.toFixed(2)}</Text>
         </View>
         <View
@@ -55,13 +110,15 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
             marginRight: 7,
             height: "100%",
           }}
-        ></View>
+        />
         <View style={styles.box}>
-          <Text style={styles.label}>Total Expense</Text>
-          <Text style={styles.expense}>-${Math.abs(savedExpense).toFixed(2)}</Text>
+          <Text style={styles.label}>Despesa Total</Text>
+          <Text style={styles.expense}>
+            -${Math.abs(savedExpense).toFixed(2)}
+          </Text>
         </View>
       </View>
-      {/* Barra de Progresso */}
+
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.progressContainer}>
           <Text style={styles.percentageLabel}>
@@ -79,19 +136,25 @@ const ExpenseSummary: React.FC<ExpenseSummaryProps> = ({
         </View>
       </TouchableOpacity>
 
-      {/* Mensagem */}
       <Text style={styles.message}>
-        ✅ {Math.round(percentage * 100)}% of your expenses, looks good.
+        {percentage >= 0.8
+          ? `⚠️ ${Math.round(
+              percentage * 100
+            )}% das despesas! Reduza seus gastos.`
+          : `✅ ${Math.round(percentage * 100)}% de suas despesas, parece bom.`}
       </Text>
 
-      <SavingModal visible={modalVisible} onClose={() => setModalVisible(false)} />
+      <SavingModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#00D09E", // Cyan-500
+    backgroundColor: "#00D09E",
     padding: 16,
     borderRadius: 12,
     margin: 20,
@@ -116,7 +179,7 @@ const styles = StyleSheet.create({
   expense: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#bfdbfe", // light blue
+    color: "#bfdbfe",
   },
   progressContainer: {
     flexDirection: "row",
